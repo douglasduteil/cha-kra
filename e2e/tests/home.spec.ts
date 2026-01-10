@@ -17,23 +17,49 @@ test.describe('User visits the home page', () => {
       console.log('[PAGE ERROR]', error.message)
     })
 
+    // Log failed requests
+    page.on('requestfailed', (request) => {
+      console.log('[REQUEST FAILED]', request.url(), request.failure()?.errorText)
+    })
+
+    // Log all responses with errors
+    page.on('response', (response) => {
+      if (!response.ok() || response.status() >= 400) {
+        console.log(`[RESPONSE ${response.status()}]`, response.url())
+      }
+    })
+
     await page.goto('/', { waitUntil: 'networkidle' })
   })
 
   test('user sees the home page loads', async ({ page }) => {
     await expect(page).toHaveURL('/')
 
+    // Get full page HTML to debug
+    const full_html = await page.content()
+    console.log('Full HTML length:', full_html.length)
+    console.log('HTML head:', full_html.substring(0, 500))
+
+    // Check script tags
+    const scripts = await page.locator('script').count()
+    console.log('Number of script tags:', scripts)
+
+    for (let i = 0; i < Math.min(scripts, 5); i++) {
+      const src = await page.locator('script').nth(i).getAttribute('src')
+      const type = await page.locator('script').nth(i).getAttribute('type')
+      console.log(`Script ${i}: src="${src}" type="${type}"`)
+    }
+
+    // Wait a moment for JS to execute
+    await page.waitForTimeout(1000)
+
     // Wait for #root to have content
     const root_div = page.locator('#root')
     const root_html = await root_div.innerHTML()
-    console.log('Root HTML length:', root_html.length)
-    console.log('Root HTML preview:', root_html.substring(0, 300))
+    console.log('Root HTML after wait:', root_html.substring(0, 300))
 
-    // Check if there's actually any content
-    const all_text = await page.textContent('body')
-    console.log('Body text:', all_text?.substring(0, 200))
-
-    await expect(root_div).not.toBeEmpty({ timeout: 5000 })
+    // Try waiting for any element to appear in root
+    await expect(root_div.locator('*').first()).toBeVisible({ timeout: 10000 })
   })
 
   test.skip('user sees the welcome message', async ({ page }) => {
