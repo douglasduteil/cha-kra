@@ -42,10 +42,37 @@
 
 ### Naming Conventions (from root)
 
+#### Code Naming
+
 - **SHALL** use snake_case for all variable names
 - **SHALL** use snake_case for all function names
 - **SHALL** use PascalCase for type definitions
 - **SHALL** use UPPER_SNAKE_CASE for constants
+
+#### File Naming
+
+- **SHALL** use snake_case for all test files (e.g., `home.spec.ts`, `breathing.spec.ts`, `pwa.spec.ts`)
+- **SHALL** use snake_case for helper/utility files (e.g., `user_actions.ts`, `test_helpers.ts`)
+- **SHALL** use snake_case for configuration files where applicable (e.g., `playwright.config.ts`)
+- **SHALL** use uppercase for constitution/readme files (e.g., `CLAUDE.md`, `README.md`)
+
+Examples:
+
+```
+✅ Good e2e file names:
+e2e/tests/home.spec.ts              (test file - snake_case)
+e2e/tests/breathing.spec.ts         (test file - snake_case)
+e2e/helpers/user_actions.ts         (helper - snake_case)
+e2e/helpers/test_helpers.ts         (helper - snake_case)
+e2e/playwright.config.ts            (config - snake_case)
+e2e/CLAUDE.md                       (documentation - UPPERCASE)
+
+❌ Bad e2e file names:
+e2e/tests/homeSpec.ts               (should be home.spec.ts)
+e2e/tests/BreathingTest.ts          (should be breathing.spec.ts)
+e2e/helpers/userActions.ts          (should be user_actions.ts)
+e2e/helpers/testHelpers.ts          (should be test_helpers.ts)
+```
 
 ### Code Quality
 
@@ -314,6 +341,12 @@ type NavigationState = 'home' | 'breathing' | 'settings'
 // ✅ Constants: UPPER_SNAKE_CASE
 const DEFAULT_TIMEOUT = 5000
 const MOBILE_VIEWPORT = { width: 375, height: 667 }
+
+// ✅ File names: snake_case (with exceptions)
+// e2e/tests/home.spec.ts
+// e2e/tests/breathing.spec.ts
+// e2e/helpers/user_actions.ts
+// e2e/playwright.config.ts
 ```
 
 ## Enforcement
@@ -323,7 +356,7 @@ All e2e tests **SHALL** be reviewed for:
 1. ✅ Adherence to root CLAUDE.md principles
 2. ✅ User-centric perspective and language
 3. ✅ Accessible selectors usage
-4. ✅ snake_case naming convention
+4. ✅ snake_case naming convention (variables, functions, and files)
 5. ✅ Accessibility test coverage
 6. ✅ Clear, readable test descriptions
 7. ✅ No implementation detail testing
@@ -333,5 +366,5 @@ All e2e tests **SHALL** be reviewed for:
 ---
 
 **Last Updated**: 2026-01-10
-**Version**: 1.0
+**Version**: 1.1
 **Extends**: [../CLAUDE.md](../CLAUDE.md)

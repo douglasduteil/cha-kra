@@ -177,11 +177,14 @@ Prettier automatically sorts imports:
 5. Alias paths (~/)
 6. Relative paths (./, ../)
 
-### File Naming
+### Legacy File Naming Note
 
-- **Components**: PascalCase (e.g., `Navigation.tsx`, `SplashScreen.tsx`)
-- **Stores**: camelCase (e.g., `theme.ts`)
-- **Pages**: PascalCase (e.g., `Home.tsx`, `Breathing.tsx`)
+**DEPRECATED**: See "Naming Conventions > File Naming" section above for current standards.
+
+Existing files may not yet follow snake_case convention:
+- **Components**: Currently PascalCase (e.g., `Navigation.tsx`, `SplashScreen.tsx`) - ✅ Correct
+- **Stores**: Currently camelCase (e.g., `theme.ts`) - ⚠️ Should migrate to `theme_store.ts`
+- **Pages**: Currently PascalCase (e.g., `Home.tsx`, `Breathing.tsx`) - ✅ Correct (framework components)
 
 ## Development Workflow
 
@@ -232,11 +235,41 @@ Detailed explanation of changes focusing on:
 
 ### Naming Conventions
 
+#### Code Naming
+
 - **SHALL** use snake_case for all variable names
 - **SHALL** use snake_case for all function names
 - **SHALL** use PascalCase for component names and type definitions
 - **SHALL** use UPPER_SNAKE_CASE for constants
 - **MUST** use descriptive names that reflect purpose and intent
+
+#### File Naming
+
+- **SHALL** prefer snake_case for file names
+- **EXCEPTION**: Framework components **SHALL** use PascalCase (e.g., `Layout.tsx`, `Navigation.tsx`, `SplashScreen.tsx`)
+- **EXCEPTION**: Configuration files **SHALL** follow their ecosystem conventions (e.g., `tsconfig.json`, `vite.config.ts`)
+- **SHALL** use snake_case for utility files, helpers, stores, and hooks (e.g., `user_actions.ts`, `theme_store.ts`, `use_media_query.ts`)
+- **SHALL** use snake_case for test files (e.g., `home.spec.ts`, `breathing.spec.ts`)
+- **SHALL** use lowercase with hyphens for markdown files (e.g., `README.md`, `CLAUDE.md`)
+
+Examples:
+
+```
+✅ Good file names:
+src/components/Layout.tsx           (component - PascalCase)
+src/components/Navigation.tsx       (component - PascalCase)
+src/stores/theme_store.ts           (store - snake_case)
+src/utils/format_date.ts            (utility - snake_case)
+src/hooks/use_dark_mode.ts          (hook - snake_case)
+e2e/tests/home.spec.ts              (test - snake_case)
+e2e/helpers/user_actions.ts         (helper - snake_case)
+
+❌ Bad file names:
+src/utils/formatDate.ts             (should be format_date.ts)
+src/hooks/useDarkMode.ts            (should be use_dark_mode.ts)
+src/stores/themeStore.ts            (should be theme_store.ts)
+e2e/tests/homeSpec.ts               (should be home.spec.ts)
+```
 
 ### Solid.js Patterns
 
