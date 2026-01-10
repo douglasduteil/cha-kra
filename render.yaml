@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: cha-kra
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: ./dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /
+        name: Cache-Control
+        value: no-cache
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
