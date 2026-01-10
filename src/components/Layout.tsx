@@ -10,6 +10,7 @@ export const Layout: ParentComponent = (props) => {
   const bgColor = () => (isDark() ? '#000000' : '#ffffff')
   const textColor = () => (isDark() ? '#ffffff' : '#000000')
 
+
   return (
     <div
       class="flex min-h-screen flex-col"

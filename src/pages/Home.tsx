@@ -10,6 +10,7 @@ export const Home: Component = () => {
   const color = () => chakraColors[chakraColor()]
   const name = () => chakraNames[chakraColor()]
 
+
   return (
     <div class="flex min-h-full flex-col items-center justify-center p-6">
       {/* Cha-Kra logo */}

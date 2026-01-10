@@ -1,4 +1,4 @@
-import { type Component, For, createSignal, createEffect } from 'solid-js'
+import { type Component, For, createSignal, onCleanup } from 'solid-js'
 
 import { useTheme, chakraColors } from '~/stores/theme'
 
@@ -24,17 +24,16 @@ export const Navigation: Component = () => {
   const [currentPath, setCurrentPath] = createSignal(window.location.pathname)
 
   // Update current path when location changes
-  createEffect(() => {
-    const handleLocationChange = () => {
-      setCurrentPath(window.location.pathname)
-    }
-    window.addEventListener('popstate', handleLocationChange)
-    return () => window.removeEventListener('popstate', handleLocationChange)
-  })
+  const handleLocationChange = () => {
+    setCurrentPath(window.location.pathname)
+  }
+  window.addEventListener('popstate', handleLocationChange)
+  onCleanup(() => window.removeEventListener('popstate', handleLocationChange))
 
   const isActive = (path: string) => currentPath() === path
   const color = () => chakraColors[chakraColor()]
   const isDark = () => effectiveTheme() === 'dark'
+
 
   return (
     <nav

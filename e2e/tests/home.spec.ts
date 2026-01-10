@@ -29,7 +29,7 @@ test.describe('User visits the home page', () => {
       }
     })
 
-    await page.goto('/', { waitUntil: 'networkidle' })
+    await page.goto('/', { waitUntil: 'domcontentloaded' })
   })
 
   test('user sees the home page loads', async ({ page }) => {
@@ -50,16 +50,27 @@ test.describe('User visits the home page', () => {
       console.log(`Script ${i}: src="${src}" type="${type}"`)
     }
 
-    // Wait for render to complete - look for any content in root
-    await page.waitForFunction(() => {
-      const root = document.getElementById('root')
-      return root && root.children.length > 0
-    }, { timeout: 10000 })
+    // Check root content immediately - don't wait
+    await page.waitForTimeout(1000)
 
-    // Now check the content
     const root_div = page.locator('#root')
     const root_html = await root_div.innerHTML()
-    console.log('Root HTML:', root_html.substring(0, 500))
+    console.log('Root HTML length:', root_html.length)
+    console.log('Root HTML content:', root_html)
+
+    const root_children = await page.evaluate(() => {
+      const root = document.getElementById('root')
+      return root ? root.children.length : -1
+    })
+    console.log('Root children count:', root_children)
+
+    // Check if there are any errors in console
+    // (errors are already logged via page.on('pageerror'))
+
+    // Try to find any element in the page
+    const all_html = await page.content()
+    console.log('Page has body?', all_html.includes('<body'))
+    console.log('Page has root div?', all_html.includes('id="root"'))
 
     // App should have rendered - check for the home page heading
     await expect(page.getByRole('heading', { name: /welcome to balance/i })).toBeVisible()
