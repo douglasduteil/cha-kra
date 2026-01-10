@@ -1,12 +1,12 @@
-import { type Component } from 'solid-js'
+import { type Component } from "solid-js";
 
-import { useTheme, chakraColors } from '~/stores/theme'
+import { useTheme, chakraColors } from "~/stores/theme";
 
 export const Breathing: Component = () => {
-  const { chakraColor, effectiveTheme } = useTheme()
+  const { chakraColor, effectiveTheme } = useTheme();
 
-  const isDark = () => effectiveTheme() === 'dark'
-  const color = () => chakraColors[chakraColor()]
+  const isDark = () => effectiveTheme() === "dark";
+  const color = () => chakraColors[chakraColor()];
 
   return (
     <div class="flex min-h-full flex-col p-6">
@@ -20,30 +20,32 @@ export const Breathing: Component = () => {
       <div class="flex-1 space-y-4">
         {[
           {
-            name: '4-7-8 Breathing',
-            description: 'Inhale for 4, hold for 7, exhale for 8',
-            duration: '5 min',
+            name: "4-7-8 Breathing",
+            description: "Inhale for 4, hold for 7, exhale for 8",
+            duration: "5 min",
           },
           {
-            name: 'Box Breathing',
-            description: 'Equal counts for inhale, hold, exhale, hold',
-            duration: '10 min',
+            name: "Box Breathing",
+            description: "Equal counts for inhale, hold, exhale, hold",
+            duration: "10 min",
           },
           {
-            name: 'Alternate Nostril',
-            description: 'Balance left and right energy channels',
-            duration: '8 min',
+            name: "Alternate Nostril",
+            description: "Balance left and right energy channels",
+            duration: "8 min",
           },
           {
-            name: 'Deep Belly Breathing',
-            description: 'Engage diaphragm for full oxygen exchange',
-            duration: '7 min',
+            name: "Deep Belly Breathing",
+            description: "Engage diaphragm for full oxygen exchange",
+            duration: "7 min",
           },
         ].map((exercise) => (
           <button
             class="w-full rounded-2xl p-6 text-left transition-all duration-200 hover:scale-[1.02]"
             style={{
-              'background-color': isDark() ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+              "background-color": isDark()
+                ? "rgba(255,255,255,0.05)"
+                : "rgba(0,0,0,0.05)",
               border: `2px solid ${color()}`,
             }}
           >
@@ -52,8 +54,8 @@ export const Breathing: Component = () => {
               <span
                 class="rounded-full px-3 py-1 text-sm font-medium"
                 style={{
-                  'background-color': color(),
-                  color: isDark() ? '#000000' : '#ffffff',
+                  "background-color": color(),
+                  color: isDark() ? "#000000" : "#ffffff",
                 }}
               >
                 {exercise.duration}
@@ -64,5 +66,5 @@ export const Breathing: Component = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

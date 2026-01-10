@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - '**'
+      - "**"
 
 jobs:
   build:
@@ -17,8 +17,8 @@ jobs:
       - name: 📦 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: 'package.json'
-          cache: 'npm'
+          node-version-file: "package.json"
+          cache: "npm"
 
       - name: 📚 Install dependencies
         run: npm ci
@@ -44,8 +44,8 @@ jobs:
       - name: 📦 Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: 'e2e/package.json'
-          cache: 'npm'
+          node-version-file: "e2e/package.json"
+          cache: "npm"
           cache-dependency-path: e2e/package-lock.json
 
       - name: 📥 Download build artifacts

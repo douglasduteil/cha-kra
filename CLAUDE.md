@@ -167,14 +167,14 @@ src/
 
 ```css
 /* index.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 ```
 
 ```typescript
 // Toggle implementation
-document.documentElement.classList.toggle('dark')
-localStorage.setItem('theme', isDark ? 'dark' : 'light')
+document.documentElement.classList.toggle("dark");
+localStorage.setItem("theme", isDark ? "dark" : "light");
 ```
 
 ### Animation Guidelines
@@ -193,8 +193,8 @@ localStorage.setItem('theme', isDark ? 'dark' : 'light')
 Prettier automatically sorts imports:
 
 1. solid-js
-2. @solidjs/* (router, etc.)
-3. @solid-primitives/*
+2. @solidjs/\* (router, etc.)
+3. @solid-primitives/\*
 4. Third-party packages
 5. Alias paths (~/)
 6. Relative paths (./, ../)
@@ -204,6 +204,7 @@ Prettier automatically sorts imports:
 **DEPRECATED**: See "Naming Conventions > File Naming" section above for current standards.
 
 Existing files may not yet follow snake_case convention:
+
 - **Components**: Currently PascalCase (e.g., `Navigation.tsx`, `SplashScreen.tsx`) - ✅ Correct
 - **Stores**: Currently camelCase (e.g., `theme.ts`) - ⚠️ Should migrate to `theme_store.ts`
 - **Pages**: Currently PascalCase (e.g., `Home.tsx`, `Breathing.tsx`) - ✅ Correct (framework components)
@@ -297,15 +298,15 @@ e2e/tests/homeSpec.ts               (should be home.spec.ts)
 
 ```typescript
 // ✅ Correct: Use signals for reactive state
-const [count, setCount] = createSignal(0)
+const [count, setCount] = createSignal(0);
 
 // ✅ Correct: Use effects for side effects
 createEffect(() => {
-  console.log('Count changed:', count())
-})
+  console.log("Count changed:", count());
+});
 
 // ✅ Correct: Use memos for derived state
-const doubled = createMemo(() => count() * 2)
+const doubled = createMemo(() => count() * 2);
 
 // ❌ Wrong: Don't use React patterns
 // No useState, useEffect, useMemo in Solid.js
@@ -474,24 +475,27 @@ npm run format   # Format code with Prettier
 
 ```typescript
 // Create a signal
-const [value, setValue] = createSignal(initialValue)
+const [value, setValue] = createSignal(initialValue);
 
 // Create an effect
 createEffect(() => {
   // Runs when dependencies change
-})
+});
 
 // Create a memo
-const computed = createMemo(() => expensive(value()))
+const computed = createMemo(() => expensive(value()));
 
 // Toggle dark mode
 const toggleDark = () => {
-  document.documentElement.classList.toggle('dark')
-  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light')
-}
+  document.documentElement.classList.toggle("dark");
+  localStorage.setItem(
+    "theme",
+    document.documentElement.classList.contains("dark") ? "dark" : "light",
+  );
+};
 
 // Access theme from store
-import { theme, setTheme } from '~/stores/theme'
+import { theme, setTheme } from "~/stores/theme";
 ```
 
 ---

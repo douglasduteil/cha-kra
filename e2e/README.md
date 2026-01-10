@@ -17,20 +17,20 @@ Inspired by [UUV (User-centric Usecases Validator)](https://e2e-test-quest.githu
 
 ```typescript
 // ❌ Technical perspective
-await page.locator('#submit-btn').click()
+await page.locator("#submit-btn").click();
 
 // ✅ User perspective
-await page.getByRole('button', { name: 'Submit' }).click()
+await page.getByRole("button", { name: "Submit" }).click();
 ```
 
 ### Use Accessible Selectors
 
 ```typescript
 // ❌ Fragile CSS selectors
-await page.locator('.nav-link-3').click()
+await page.locator(".nav-link-3").click();
 
 // ✅ Accessible selectors (how users find elements)
-await page.getByRole('link', { name: 'Breathing' }).click()
+await page.getByRole("link", { name: "Breathing" }).click();
 ```
 
 ### Write Descriptive Test Names
@@ -104,20 +104,24 @@ e2e/
 The `helpers/user-actions.ts` file provides user-centric utilities:
 
 ```typescript
-import { findButton, userClicksButton, userSeesText } from '../helpers/user-actions'
+import {
+  findButton,
+  userClicksButton,
+  userSeesText,
+} from "../helpers/user-actions";
 
-test('user starts meditation', async ({ page }) => {
-  await page.goto('/breathing')
+test("user starts meditation", async ({ page }) => {
+  await page.goto("/breathing");
 
   // User sees the page
-  await userSeesText(page, 'Breathing Exercise')
+  await userSeesText(page, "Breathing Exercise");
 
   // User clicks start button
-  await userClicksButton(page, 'Start')
+  await userClicksButton(page, "Start");
 
   // User sees meditation in progress
-  await userSeesText(page, 'Breathe in')
-})
+  await userSeesText(page, "Breathe in");
+});
 ```
 
 ### Playwright's Built-in Accessibility Selectors
@@ -126,18 +130,18 @@ Playwright provides excellent built-in methods:
 
 ```typescript
 // Find by role (best for interactive elements)
-page.getByRole('button', { name: 'Start' })
-page.getByRole('link', { name: 'Home' })
-page.getByRole('heading', { level: 1 })
+page.getByRole("button", { name: "Start" });
+page.getByRole("link", { name: "Home" });
+page.getByRole("heading", { level: 1 });
 
 // Find by label (best for form inputs)
-page.getByLabel('Email address')
+page.getByLabel("Email address");
 
 // Find by text (best for content)
-page.getByText('Welcome to Cha-Kra')
+page.getByText("Welcome to Cha-Kra");
 
 // Find by placeholder
-page.getByPlaceholder('Enter your name')
+page.getByPlaceholder("Enter your name");
 ```
 
 ### Test Organization
@@ -145,19 +149,19 @@ page.getByPlaceholder('Enter your name')
 Group tests by user scenarios:
 
 ```typescript
-test.describe('User manages meditation settings', () => {
+test.describe("User manages meditation settings", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/settings')
-  })
+    await page.goto("/settings");
+  });
 
-  test('user can enable dark mode', async ({ page }) => {
+  test("user can enable dark mode", async ({ page }) => {
     // Test implementation
-  })
+  });
 
-  test('user preferences persist after reload', async ({ page }) => {
+  test("user preferences persist after reload", async ({ page }) => {
     // Test implementation
-  })
-})
+  });
+});
 ```
 
 ## Best Practices
@@ -168,60 +172,60 @@ Ask: "What would a real person do?"
 
 ```typescript
 // User's mental model: "I want to start meditating"
-test('user starts breathing meditation', async ({ page }) => {
-  await page.goto('/')
-  await page.getByRole('link', { name: 'Breathing' }).click()
-  await page.getByRole('button', { name: 'Start' }).click()
-})
+test("user starts breathing meditation", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Breathing" }).click();
+  await page.getByRole("button", { name: "Start" }).click();
+});
 ```
 
 ### 2. Test Accessibility
 
 ```typescript
-test('user can navigate with keyboard only', async ({ page }) => {
-  await page.goto('/')
+test("user can navigate with keyboard only", async ({ page }) => {
+  await page.goto("/");
 
   // Tab through interactive elements
-  await page.keyboard.press('Tab')
+  await page.keyboard.press("Tab");
 
-  const focusedElement = page.locator(':focus')
-  await expect(focusedElement).toBeVisible()
-})
+  const focusedElement = page.locator(":focus");
+  await expect(focusedElement).toBeVisible();
+});
 ```
 
 ### 3. Test for All Users
 
 ```typescript
-test('respects reduced motion preference', async ({ page, context }) => {
+test("respects reduced motion preference", async ({ page, context }) => {
   // Emulate user who prefers reduced motion
   await context.addInitScript(() => {
-    Object.defineProperty(window, 'matchMedia', {
+    Object.defineProperty(window, "matchMedia", {
       value: (query: string) => ({
-        matches: query.includes('prefers-reduced-motion: reduce'),
+        matches: query.includes("prefers-reduced-motion: reduce"),
         // ... implementation
       }),
-    })
-  })
+    });
+  });
 
-  await page.goto('/breathing')
+  await page.goto("/breathing");
   // Animations should be reduced or removed
-})
+});
 ```
 
 ### 4. Test PWA Features
 
 ```typescript
-test('app works offline', async ({ page, context }) => {
+test("app works offline", async ({ page, context }) => {
   // Visit online first
-  await page.goto('/')
+  await page.goto("/");
 
   // Go offline
-  await context.setOffline(true)
+  await context.setOffline(true);
 
   // Should still work
-  await page.reload()
-  await expect(page.getByRole('heading')).toBeVisible()
-})
+  await page.reload();
+  await expect(page.getByRole("heading")).toBeVisible();
+});
 ```
 
 ## Browser Coverage
@@ -251,20 +255,20 @@ Tests run automatically in CI with:
 Example:
 
 ```typescript
-import { test, expect } from '@playwright/test'
+import { test, expect } from "@playwright/test";
 
-test.describe('User practices mantra meditation', () => {
-  test('user can play mantra audio', async ({ page }) => {
-    await page.goto('/mantra')
+test.describe("User practices mantra meditation", () => {
+  test("user can play mantra audio", async ({ page }) => {
+    await page.goto("/mantra");
 
-    const playButton = page.getByRole('button', { name: /play/i })
-    await playButton.click()
+    const playButton = page.getByRole("button", { name: /play/i });
+    await playButton.click();
 
     // Audio should start playing
-    const pauseButton = page.getByRole('button', { name: /pause/i })
-    await expect(pauseButton).toBeVisible()
-  })
-})
+    const pauseButton = page.getByRole("button", { name: /pause/i });
+    await expect(pauseButton).toBeVisible();
+  });
+});
 ```
 
 ## Resources

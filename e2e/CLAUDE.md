@@ -116,21 +116,21 @@ Avoid testing implementation details:
 ### Test Structure
 
 ```typescript
-test.describe('User [does something]', () => {
+test.describe("User [does something]", () => {
   test.beforeEach(async ({ page }) => {
     // Setup: Navigate to starting point
-    await page.goto('/path')
-  })
+    await page.goto("/path");
+  });
 
-  test('user can [specific action]', async ({ page }) => {
+  test("user can [specific action]", async ({ page }) => {
     // Act: User performs action
-    const button = page.getByRole('button', { name: 'Start' })
-    await button.click()
+    const button = page.getByRole("button", { name: "Start" });
+    await button.click();
 
     // Assert: User sees result
-    await expect(page.getByText('In Progress')).toBeVisible()
-  })
-})
+    await expect(page.getByText("In Progress")).toBeVisible();
+  });
+});
 ```
 
 ### Helper Functions
@@ -146,13 +146,13 @@ Example:
 ```typescript
 // ✅ Good: Clear, user-centric helper with snake_case
 async function user_toggles_dark_mode(page: Page) {
-  const toggle_button = page.getByRole('button', { name: /dark mode/i })
-  await toggle_button.click()
+  const toggle_button = page.getByRole("button", { name: /dark mode/i });
+  await toggle_button.click();
 }
 
 // ❌ Bad: Technical, camelCase (violates naming convention)
 async function clickDarkModeButton(page: Page) {
-  await page.locator('.dark-mode-btn').click()
+  await page.locator(".dark-mode-btn").click();
 }
 ```
 
@@ -266,37 +266,39 @@ jobs:
 ### ✅ Good Test (Following Constitution)
 
 ```typescript
-test('user can start breathing meditation and see instructions', async ({ page }) => {
-  await page.goto('/breathing')
+test("user can start breathing meditation and see instructions", async ({
+  page,
+}) => {
+  await page.goto("/breathing");
 
   // User sees the breathing page
-  const heading = page.getByRole('heading', { name: /breathing/i })
-  await expect(heading).toBeVisible()
+  const heading = page.getByRole("heading", { name: /breathing/i });
+  await expect(heading).toBeVisible();
 
   // User starts meditation
-  const start_button = page.getByRole('button', { name: /start/i })
-  await start_button.click()
+  const start_button = page.getByRole("button", { name: /start/i });
+  await start_button.click();
 
   // User sees breathing instructions
-  const instruction = page.getByText(/breathe in/i)
-  await expect(instruction).toBeVisible()
-})
+  const instruction = page.getByText(/breathe in/i);
+  await expect(instruction).toBeVisible();
+});
 ```
 
 ### ❌ Bad Test (Violates Constitution)
 
 ```typescript
 // ❌ Technical perspective, camelCase, fragile selectors
-test('breathing component renders', async ({ page }) => {
-  await page.goto('/breathing')
+test("breathing component renders", async ({ page }) => {
+  await page.goto("/breathing");
 
-  const breathingDiv = page.locator('.breathing-container')
-  await breathingDiv.click()
+  const breathingDiv = page.locator(".breathing-container");
+  await breathingDiv.click();
 
   // TODO: add more assertions
-  const button = page.locator('#start-btn')
-  await button.click()
-})
+  const button = page.locator("#start-btn");
+  await button.click();
+});
 ```
 
 ## Quick Reference
@@ -305,42 +307,42 @@ test('breathing component renders', async ({ page }) => {
 
 ```typescript
 // Navigation
-await page.getByRole('link', { name: 'Home' }).click()
+await page.getByRole("link", { name: "Home" }).click();
 
 // Button interaction
-await page.getByRole('button', { name: 'Start' }).click()
+await page.getByRole("button", { name: "Start" }).click();
 
 // Form input
-await page.getByLabel('Email').fill('user@example.com')
+await page.getByLabel("Email").fill("user@example.com");
 
 // Verification
-await expect(page.getByText('Welcome')).toBeVisible()
+await expect(page.getByText("Welcome")).toBeVisible();
 
 // Keyboard navigation
-await page.keyboard.press('Tab')
-await page.keyboard.press('Enter')
+await page.keyboard.press("Tab");
+await page.keyboard.press("Enter");
 ```
 
 ### Naming Examples
 
 ```typescript
 // ✅ Variables: snake_case
-const dark_mode_toggle = page.getByRole('button', { name: /dark mode/i })
-const is_offline = await context.isOffline()
-const start_button = page.getByRole('button', { name: /start/i })
+const dark_mode_toggle = page.getByRole("button", { name: /dark mode/i });
+const is_offline = await context.isOffline();
+const start_button = page.getByRole("button", { name: /start/i });
 
 // ✅ Functions: snake_case
-async function user_clicks_start_button(page: Page) { }
-async function verify_page_is_accessible(page: Page) { }
-async function toggle_dark_mode(page: Page) { }
+async function user_clicks_start_button(page: Page) {}
+async function verify_page_is_accessible(page: Page) {}
+async function toggle_dark_mode(page: Page) {}
 
 // ✅ Types: PascalCase
-interface UserPreferences { }
-type NavigationState = 'home' | 'breathing' | 'settings'
+interface UserPreferences {}
+type NavigationState = "home" | "breathing" | "settings";
 
 // ✅ Constants: UPPER_SNAKE_CASE
-const DEFAULT_TIMEOUT = 5000
-const MOBILE_VIEWPORT = { width: 375, height: 667 }
+const DEFAULT_TIMEOUT = 5000;
+const MOBILE_VIEWPORT = { width: 375, height: 667 };
 
 // ✅ File names: snake_case (with exceptions)
 // e2e/tests/home.spec.ts

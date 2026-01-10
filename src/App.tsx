@@ -1,21 +1,21 @@
-import { type Component } from 'solid-js'
-import { Route, Router } from '@solidjs/router'
+import { Route, Router } from "@solidjs/router";
+import { type Component } from "solid-js";
 
-import { Inspiration } from '~/pages/Inspiration'
-import { initializeTheme } from '~/stores/theme'
-import { WhiteNoise } from '~/pages/WhiteNoise'
-import { Breathing } from '~/pages/Breathing'
-import { Layout } from '~/components/Layout'
-import { Settings } from '~/pages/Settings'
-import { Movement } from '~/pages/Movement'
-import { Tampura } from '~/pages/Tampura'
-import { Mantra } from '~/pages/Mantra'
-import { Guided } from '~/pages/Guided'
-import { Home } from '~/pages/Home'
+import { Inspiration } from "~/pages/Inspiration";
+import { initializeTheme } from "~/stores/theme";
+import { WhiteNoise } from "~/pages/WhiteNoise";
+import { Breathing } from "~/pages/Breathing";
+import { Layout } from "~/components/Layout";
+import { Settings } from "~/pages/Settings";
+import { Movement } from "~/pages/Movement";
+import { Tampura } from "~/pages/Tampura";
+import { Mantra } from "~/pages/Mantra";
+import { Guided } from "~/pages/Guided";
+import { Home } from "~/pages/Home";
 
 const App: Component = () => {
   // Initialize theme system
-  initializeTheme()
+  initializeTheme();
 
   return (
     <Router root={Layout}>
@@ -29,7 +29,7 @@ const App: Component = () => {
       <Route path="/inspiration" component={Inspiration} />
       <Route path="/settings" component={Settings} />
     </Router>
-  )
-}
+  );
+};
 
-export default App
+export default App;

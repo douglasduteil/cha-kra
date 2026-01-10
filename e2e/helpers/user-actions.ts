@@ -1,4 +1,4 @@
-import type { Page, Locator } from '@playwright/test'
+import type { Page, Locator } from "@playwright/test";
 
 /**
  * User-centric helper utilities for accessibility-first selectors
@@ -14,12 +14,12 @@ import type { Page, Locator } from '@playwright/test'
 export async function find_by_role(
   page: Page,
   role: string,
-  options?: { name?: string | RegExp }
+  options?: { name?: string | RegExp },
 ) {
   const selector = options?.name
     ? `role=${role}[name="${options.name}"]`
-    : `role=${role}`
-  return page.locator(selector)
+    : `role=${role}`;
+  return page.locator(selector);
 }
 
 /**
@@ -27,7 +27,7 @@ export async function find_by_role(
  * This is how users identify form fields
  */
 export async function find_by_label(page: Page, text: string | RegExp) {
-  return page.getByLabel(text)
+  return page.getByLabel(text);
 }
 
 /**
@@ -35,21 +35,21 @@ export async function find_by_label(page: Page, text: string | RegExp) {
  * This is how users identify content on the page
  */
 export async function find_by_text(page: Page, text: string | RegExp) {
-  return page.getByText(text)
+  return page.getByText(text);
 }
 
 /**
  * Find navigation link by its accessible name
  */
 export async function find_nav_link(page: Page, name: string | RegExp) {
-  return page.getByRole('link', { name })
+  return page.getByRole("link", { name });
 }
 
 /**
  * Find button by its accessible name
  */
 export async function find_button(page: Page, name: string | RegExp) {
-  return page.getByRole('button', { name })
+  return page.getByRole("button", { name });
 }
 
 /**
@@ -58,42 +58,42 @@ export async function find_button(page: Page, name: string | RegExp) {
 export async function find_heading(
   page: Page,
   level: 1 | 2 | 3 | 4 | 5 | 6,
-  name?: string | RegExp
+  name?: string | RegExp,
 ) {
-  return page.getByRole('heading', { level, name })
+  return page.getByRole("heading", { level, name });
 }
 
 /**
  * Wait for user to see specific content
  */
 export async function user_sees_text(page: Page, text: string | RegExp) {
-  await page.getByText(text).waitFor({ state: 'visible' })
+  await page.getByText(text).waitFor({ state: "visible" });
 }
 
 /**
  * User clicks on a button
  */
 export async function user_clicks_button(page: Page, name: string | RegExp) {
-  await page.getByRole('button', { name }).click()
+  await page.getByRole("button", { name }).click();
 }
 
 /**
  * User navigates using a link
  */
 export async function user_clicks_link(page: Page, name: string | RegExp) {
-  await page.getByRole('link', { name }).click()
+  await page.getByRole("link", { name }).click();
 }
 
 /**
  * Check if element is visible to the user
  */
 export async function is_visible_to_user(locator: Locator) {
-  return await locator.isVisible()
+  return await locator.isVisible();
 }
 
 /**
  * Check if user can interact with element (enabled and visible)
  */
 export async function can_user_interact(locator: Locator) {
-  return (await locator.isVisible()) && (await locator.isEnabled())
+  return (await locator.isVisible()) && (await locator.isEnabled());
 }

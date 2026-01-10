@@ -1,20 +1,20 @@
-import { type Component, type ParentComponent } from 'solid-js'
+import { type Component, type ParentComponent } from "solid-js";
 
-import { useTheme, chakraColors } from '~/stores/theme'
-import { Navigation } from '~/components/Navigation'
+import { useTheme, chakraColors } from "~/stores/theme";
+import { Navigation } from "~/components/Navigation";
 
 export const Layout: ParentComponent = (props) => {
-  const { chakraColor, effectiveTheme } = useTheme()
+  const { chakraColor, effectiveTheme } = useTheme();
 
-  const isDark = () => effectiveTheme() === 'dark'
-  const bgColor = () => (isDark() ? '#000000' : '#ffffff')
-  const textColor = () => (isDark() ? '#ffffff' : '#000000')
+  const isDark = () => effectiveTheme() === "dark";
+  const bgColor = () => (isDark() ? "#000000" : "#ffffff");
+  const textColor = () => (isDark() ? "#ffffff" : "#000000");
 
   return (
     <div
       class="flex min-h-screen flex-col"
       style={{
-        'background-color': bgColor(),
+        "background-color": bgColor(),
         color: textColor(),
       }}
     >
@@ -24,5 +24,5 @@ export const Layout: ParentComponent = (props) => {
       {/* Bottom navigation */}
       <Navigation />
     </div>
-  )
-}
+  );
+};
