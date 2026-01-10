@@ -44,44 +44,38 @@ export const updateEffectiveTheme = () => {
   }
 }
 
-// Setup theme listeners - call this from onMount in a component
-export const setupThemeListeners = () => {
-  // Initialize theme on mount
-  updateEffectiveTheme()
-
-  // Create effect to persist theme changes to localStorage and update effective theme
-  createEffect(() => {
-    const currentTheme = theme()
-    if (currentTheme !== getInitialTheme()) {
-      localStorage.setItem(THEME_STORAGE_KEY, currentTheme)
-    }
+// Initialize theme on mount
+export const initializeTheme = () => {
+  onMount(() => {
     updateEffectiveTheme()
-  })
 
-  // Create effect to persist chakra color changes to localStorage
-  createEffect(() => {
-    const color = chakraColor()
-    if (color !== getInitialChakra()) {
-      localStorage.setItem(CHAKRA_STORAGE_KEY, color)
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = () => {
+      if (theme() === 'system') {
+        updateEffectiveTheme()
+      }
     }
+    mediaQuery.addEventListener('change', handleChange)
+
+    // Cleanup
+    return () => mediaQuery.removeEventListener('change', handleChange)
   })
-
-  // Listen for system theme changes
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-  const handleChange = () => {
-    if (theme() === 'system') {
-      updateEffectiveTheme()
-    }
-  }
-  mediaQuery.addEventListener('change', handleChange)
-
-  // Cleanup
-  return () => mediaQuery.removeEventListener('change', handleChange)
 }
 
 // Theme management functions
 export const useTheme = () => {
-  // Just return the signals, don't create effects here
+  createEffect(() => {
+    const currentTheme = theme()
+    localStorage.setItem(THEME_STORAGE_KEY, currentTheme)
+    updateEffectiveTheme()
+  })
+
+  createEffect(() => {
+    const color = chakraColor()
+    localStorage.setItem(CHAKRA_STORAGE_KEY, color)
+  })
+
   return {
     theme,
     setTheme,

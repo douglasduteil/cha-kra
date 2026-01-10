@@ -1,4 +1,5 @@
-import { type Component, For, createSignal, onCleanup } from 'solid-js'
+import { A, useLocation } from '@solidjs/router'
+import { type Component, For } from 'solid-js'
 
 import { useTheme, chakraColors } from '~/stores/theme'
 
@@ -20,20 +21,12 @@ const navItems: NavItem[] = [
 ]
 
 export const Navigation: Component = () => {
+  const location = useLocation()
   const { chakraColor, effectiveTheme } = useTheme()
-  const [currentPath, setCurrentPath] = createSignal(window.location.pathname)
 
-  // Update current path when location changes
-  const handleLocationChange = () => {
-    setCurrentPath(window.location.pathname)
-  }
-  window.addEventListener('popstate', handleLocationChange)
-  onCleanup(() => window.removeEventListener('popstate', handleLocationChange))
-
-  const isActive = (path: string) => currentPath() === path
+  const isActive = (path: string) => location.pathname === path
   const color = () => chakraColors[chakraColor()]
   const isDark = () => effectiveTheme() === 'dark'
-
 
   return (
     <nav
@@ -46,7 +39,7 @@ export const Navigation: Component = () => {
       <div class="flex justify-around overflow-x-auto">
         <For each={navItems}>
           {(item) => (
-            <a
+            <A
               href={item.path}
               class="flex min-w-[60px] flex-col items-center gap-1 px-2 py-3 text-xs transition-all duration-200"
               classList={{
@@ -59,7 +52,7 @@ export const Navigation: Component = () => {
             >
               <span class="text-xl">{item.icon}</span>
               <span class="truncate text-center font-medium">{item.label}</span>
-            </a>
+            </A>
           )}
         </For>
       </div>
