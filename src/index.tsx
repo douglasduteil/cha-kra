@@ -13,10 +13,15 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   })
 }
 
+console.log('[index.tsx] Starting app initialization')
+
 const root = document.getElementById('root')
+console.log('[index.tsx] Root element:', root)
 
 if (!root) {
   throw new Error('Root element not found')
 }
 
+console.log('[index.tsx] Calling render()')
 render(() => <App />, root)
+console.log('[index.tsx] Render complete')

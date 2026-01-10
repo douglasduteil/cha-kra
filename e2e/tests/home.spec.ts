@@ -50,16 +50,19 @@ test.describe('User visits the home page', () => {
       console.log(`Script ${i}: src="${src}" type="${type}"`)
     }
 
-    // Wait a moment for JS to execute
-    await page.waitForTimeout(1000)
+    // Wait for render to complete
+    await page.waitForFunction(() => {
+      const root = document.getElementById('root')
+      return root && root.children.length > 0
+    }, { timeout: 10000 })
 
-    // Wait for #root to have content
+    // Now check the content
     const root_div = page.locator('#root')
     const root_html = await root_div.innerHTML()
-    console.log('Root HTML after wait:', root_html.substring(0, 300))
+    console.log('Root HTML:', root_html.substring(0, 500))
 
-    // Try waiting for any element to appear in root
-    await expect(root_div.locator('*').first()).toBeVisible({ timeout: 10000 })
+    // App should have rendered - check for Hello World
+    await expect(page.getByText('Hello World')).toBeVisible()
   })
 
   test.skip('user sees the welcome message', async ({ page }) => {
