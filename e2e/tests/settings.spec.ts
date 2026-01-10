@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test'
  * Testing how users customize their meditation experience
  */
 
-test.describe.skip('User manages settings', () => {
+test.describe('User manages settings', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/settings')
   })
@@ -17,52 +17,40 @@ test.describe.skip('User manages settings', () => {
   })
 
   test('user can toggle dark mode from settings', async ({ page }) => {
-    // User should see a dark mode control
-    const dark_mode_control = page.locator('text=/dark mode|theme/i')
+    // User should see theme heading
+    const theme_heading = page.getByRole('heading', { name: /theme/i })
+    await expect(theme_heading).toBeVisible()
 
-    if (await dark_mode_control.isVisible()) {
-      const html_element = page.locator('html')
-      const initial_theme = await html_element.getAttribute('class')
+    // User clicks Dark theme button
+    const dark_button = page.getByRole('button', { name: /dark/i })
+    await expect(dark_button).toBeVisible()
+    await dark_button.click()
 
-      // User toggles dark mode
-      const toggle_button = page.getByRole('button', {
-        name: /dark mode|theme/i,
-      })
+    // Dark class should be applied
+    const html_element = page.locator('html')
+    await expect(html_element).toHaveClass(/dark/)
 
-      if (await toggle_button.isVisible()) {
-        await toggle_button.click()
+    // User clicks Light theme button
+    const light_button = page.getByRole('button', { name: /light/i })
+    await light_button.click()
 
-        // Theme should change
-        const new_theme = await html_element.getAttribute('class')
-        expect(initial_theme).not.toBe(new_theme)
-      }
-    }
+    // Light class should be applied
+    await expect(html_element).toHaveClass(/light/)
   })
 
   test('user preferences persist across page reloads', async ({ page }) => {
-    // Get initial state
+    // User sets dark theme
+    const dark_button = page.getByRole('button', { name: /dark/i })
+    await dark_button.click()
+
     const html_element = page.locator('html')
-    const initial_has_class = await html_element.evaluate((el) =>
-      el.classList.contains('dark')
-    )
+    await expect(html_element).toHaveClass(/dark/)
 
-    // User toggles a setting
-    const toggle_button = page.getByRole('button', {
-      name: /dark mode|theme/i,
-    })
+    // User reloads page
+    await page.reload()
 
-    if (await toggle_button.isVisible()) {
-      await toggle_button.click()
-
-      // Reload page
-      await page.reload()
-
-      // Setting should persist
-      const after_reload_has_class = await html_element.evaluate((el) =>
-        el.classList.contains('dark')
-      )
-      expect(after_reload_has_class).not.toBe(initial_has_class)
-    }
+    // Dark theme should persist
+    await expect(html_element).toHaveClass(/dark/)
   })
 
   test('user can navigate back from settings', async ({ page }) => {
@@ -76,7 +64,7 @@ test.describe.skip('User manages settings', () => {
   })
 })
 
-test.describe.skip('Settings accessibility', () => {
+test.describe('Settings accessibility', () => {
   test('settings controls are keyboard accessible', async ({ page }) => {
     await page.goto('/settings')
 

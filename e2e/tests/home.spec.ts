@@ -48,14 +48,14 @@ test.describe('User visits the home page', () => {
     }
   })
 
-  test.skip('user can access settings', async ({ page }) => {
+  test('user can access settings', async ({ page }) => {
     // User should be able to open settings
     const settings_link = page.getByRole('link', { name: /settings/i })
     await expect(settings_link).toBeVisible()
   })
 })
 
-test.describe.skip('User navigates between pages', () => {
+test.describe('User navigates between pages', () => {
   test('user can go to breathing exercise', async ({ page }) => {
     await page.goto('/')
 
@@ -87,7 +87,7 @@ test.describe.skip('User navigates between pages', () => {
   })
 })
 
-test.describe.skip('Accessibility', () => {
+test.describe('Accessibility', () => {
   test('user can navigate using keyboard only', async ({ page }) => {
     await page.goto('/')
 
@@ -102,8 +102,8 @@ test.describe.skip('Accessibility', () => {
   test('page has proper heading structure', async ({ page }) => {
     await page.goto('/')
 
-    // Page should have at least one h1 heading
-    const main_heading = page.getByRole('heading', { level: 1 })
-    await expect(main_heading).toHaveCount(1)
+    // Page should have h1 headings (Cha-Kra logo uses two h1s)
+    const main_headings = page.getByRole('heading', { level: 1 })
+    await expect(main_headings.first()).toBeVisible()
   })
 })

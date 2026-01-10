@@ -5,14 +5,14 @@ import { test, expect } from '@playwright/test'
  * Testing how users experience the breathing meditation tool
  */
 
-test.describe.skip('User uses breathing exercise', () => {
+test.describe('User uses breathing exercise', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/breathing')
   })
 
   test('user sees breathing exercise page', async ({ page }) => {
     // User should see the breathing page heading
-    const heading = page.getByRole('heading', { name: /breathing/i })
+    const heading = page.getByRole('heading', { level: 1, name: /breathing/i })
     await expect(heading).toBeVisible()
   })
 
@@ -46,7 +46,7 @@ test.describe.skip('User uses breathing exercise', () => {
   })
 })
 
-test.describe.skip('Breathing exercise accessibility', () => {
+test.describe('Breathing exercise accessibility', () => {
   test('breathing animations respect reduced motion preference', async ({
     page,
     context,
@@ -71,7 +71,7 @@ test.describe.skip('Breathing exercise accessibility', () => {
     await page.goto('/breathing')
 
     // User with motion sensitivity should still be able to use the app
-    const heading = page.getByRole('heading', { name: /breathing/i })
+    const heading = page.getByRole('heading', { level: 1, name: /breathing/i })
     await expect(heading).toBeVisible()
   })
 
