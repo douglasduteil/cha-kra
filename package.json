@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
+    "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^22.10.5",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
@@ -29,5 +30,11 @@
     "vite-plugin-pwa": "^0.21.1",
     "vite-plugin-solid": "^2.10.2",
     "workbox-window": "^7.3.0"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-sort-imports",
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }
