@@ -105,6 +105,28 @@
   - prettier-plugin-sort-imports ^1.8.6
   - prettier-plugin-tailwindcss ^0.6.9
 
+### Dependency Management
+
+- **Version Policy**: Use exact versions (no `^` or `~` prefixes)
+  - **WHY**: Prevents unexpected breaking changes and ensures reproducible builds
+  - **EXCEPTION**: The Technology Stack documentation above uses `^` for readability
+  - **ENFORCEMENT**: package.json SHALL contain exact versions only
+- **Lock Files**: package-lock.json **MUST** be committed
+  - Required for `npm ci` in CI/CD pipelines
+  - Ensures deterministic dependency resolution
+- **Engines Field**: **SHALL** specify exact Node.js and npm versions
+  - Serves as single source of truth for runtime requirements
+  - CI workflows **SHALL** use `node-version-file` instead of hardcoded versions
+  - Example: `"engines": { "node": "20.18.1", "npm": "10.9.4" }`
+- **Automated Updates**: Dependabot **SHALL** handle dependency updates
+  - Weekly automated PRs for patch and minor updates
+  - Major version updates **MUST** be reviewed manually
+  - Framework packages (Solid.js, Vite, Tailwind) require manual major version updates
+- **E2E Dependencies**: e2e package.json **SHALL** include all required runtime dependencies
+  - E2E tests run in isolated environment without root node_modules
+  - Must include build tools (vite) for preview server
+  - Versions **SHOULD** match root package.json for consistency
+
 ## Architecture Patterns
 
 ### Component Structure
@@ -145,14 +167,14 @@ src/
 
 ```css
 /* index.css */
-@import 'tailwindcss';
+@import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 ```
 
 ```typescript
 // Toggle implementation
-document.documentElement.classList.toggle('dark')
-localStorage.setItem('theme', isDark ? 'dark' : 'light')
+document.documentElement.classList.toggle("dark");
+localStorage.setItem("theme", isDark ? "dark" : "light");
 ```
 
 ### Animation Guidelines
@@ -171,17 +193,21 @@ localStorage.setItem('theme', isDark ? 'dark' : 'light')
 Prettier automatically sorts imports:
 
 1. solid-js
-2. @solidjs/* (router, etc.)
-3. @solid-primitives/*
+2. @solidjs/\* (router, etc.)
+3. @solid-primitives/\*
 4. Third-party packages
 5. Alias paths (~/)
 6. Relative paths (./, ../)
 
-### File Naming
+### Legacy File Naming Note
 
-- **Components**: PascalCase (e.g., `Navigation.tsx`, `SplashScreen.tsx`)
-- **Stores**: camelCase (e.g., `theme.ts`)
-- **Pages**: PascalCase (e.g., `Home.tsx`, `Breathing.tsx`)
+**DEPRECATED**: See "Naming Conventions > File Naming" section above for current standards.
+
+Existing files may not yet follow snake_case convention:
+
+- **Components**: Currently PascalCase (e.g., `Navigation.tsx`, `SplashScreen.tsx`) - ✅ Correct
+- **Stores**: Currently camelCase (e.g., `theme.ts`) - ⚠️ Should migrate to `theme_store.ts`
+- **Pages**: Currently PascalCase (e.g., `Home.tsx`, `Breathing.tsx`) - ✅ Correct (framework components)
 
 ## Development Workflow
 
@@ -230,19 +256,57 @@ Detailed explanation of changes focusing on:
 - **MUST** provide explicit return types for public APIs
 - **SHALL** use type inference for internal variables
 
+### Naming Conventions
+
+#### Code Naming
+
+- **SHALL** use snake_case for all variable names
+- **SHALL** use snake_case for all function names
+- **SHALL** use PascalCase for component names and type definitions
+- **SHALL** use UPPER_SNAKE_CASE for constants
+- **MUST** use descriptive names that reflect purpose and intent
+
+#### File Naming
+
+- **SHALL** prefer snake_case for file names
+- **EXCEPTION**: Framework components **SHALL** use PascalCase (e.g., `Layout.tsx`, `Navigation.tsx`, `SplashScreen.tsx`)
+- **EXCEPTION**: Configuration files **SHALL** follow their ecosystem conventions (e.g., `tsconfig.json`, `vite.config.ts`)
+- **SHALL** use snake_case for utility files, helpers, stores, and hooks (e.g., `user_actions.ts`, `theme_store.ts`, `use_media_query.ts`)
+- **SHALL** use snake_case for test files (e.g., `home.spec.ts`, `breathing.spec.ts`)
+- **SHALL** use lowercase with hyphens for markdown files (e.g., `README.md`, `CLAUDE.md`)
+
+Examples:
+
+```
+✅ Good file names:
+src/components/Layout.tsx           (component - PascalCase)
+src/components/Navigation.tsx       (component - PascalCase)
+src/stores/theme_store.ts           (store - snake_case)
+src/utils/format_date.ts            (utility - snake_case)
+src/hooks/use_dark_mode.ts          (hook - snake_case)
+e2e/tests/home.spec.ts              (test - snake_case)
+e2e/helpers/user_actions.ts         (helper - snake_case)
+
+❌ Bad file names:
+src/utils/formatDate.ts             (should be format_date.ts)
+src/hooks/useDarkMode.ts            (should be use_dark_mode.ts)
+src/stores/themeStore.ts            (should be theme_store.ts)
+e2e/tests/homeSpec.ts               (should be home.spec.ts)
+```
+
 ### Solid.js Patterns
 
 ```typescript
 // ✅ Correct: Use signals for reactive state
-const [count, setCount] = createSignal(0)
+const [count, setCount] = createSignal(0);
 
 // ✅ Correct: Use effects for side effects
 createEffect(() => {
-  console.log('Count changed:', count())
-})
+  console.log("Count changed:", count());
+});
 
 // ✅ Correct: Use memos for derived state
-const doubled = createMemo(() => count() * 2)
+const doubled = createMemo(() => count() * 2);
 
 // ❌ Wrong: Don't use React patterns
 // No useState, useEffect, useMemo in Solid.js
@@ -411,24 +475,27 @@ npm run format   # Format code with Prettier
 
 ```typescript
 // Create a signal
-const [value, setValue] = createSignal(initialValue)
+const [value, setValue] = createSignal(initialValue);
 
 // Create an effect
 createEffect(() => {
   // Runs when dependencies change
-})
+});
 
 // Create a memo
-const computed = createMemo(() => expensive(value()))
+const computed = createMemo(() => expensive(value()));
 
 // Toggle dark mode
 const toggleDark = () => {
-  document.documentElement.classList.toggle('dark')
-  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light')
-}
+  document.documentElement.classList.toggle("dark");
+  localStorage.setItem(
+    "theme",
+    document.documentElement.classList.contains("dark") ? "dark" : "light",
+  );
+};
 
 // Access theme from store
-import { theme, setTheme } from '~/stores/theme'
+import { theme, setTheme } from "~/stores/theme";
 ```
 
 ---
