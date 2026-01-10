@@ -105,6 +105,28 @@
   - prettier-plugin-sort-imports ^1.8.6
   - prettier-plugin-tailwindcss ^0.6.9
 
+### Dependency Management
+
+- **Version Policy**: Use exact versions (no `^` or `~` prefixes)
+  - **WHY**: Prevents unexpected breaking changes and ensures reproducible builds
+  - **EXCEPTION**: The Technology Stack documentation above uses `^` for readability
+  - **ENFORCEMENT**: package.json SHALL contain exact versions only
+- **Lock Files**: package-lock.json **MUST** be committed
+  - Required for `npm ci` in CI/CD pipelines
+  - Ensures deterministic dependency resolution
+- **Engines Field**: **SHALL** specify exact Node.js and npm versions
+  - Serves as single source of truth for runtime requirements
+  - CI workflows **SHALL** use `node-version-file` instead of hardcoded versions
+  - Example: `"engines": { "node": "20.18.1", "npm": "10.9.4" }`
+- **Automated Updates**: Dependabot **SHALL** handle dependency updates
+  - Weekly automated PRs for patch and minor updates
+  - Major version updates **MUST** be reviewed manually
+  - Framework packages (Solid.js, Vite, Tailwind) require manual major version updates
+- **E2E Dependencies**: e2e package.json **SHALL** include all required runtime dependencies
+  - E2E tests run in isolated environment without root node_modules
+  - Must include build tools (vite) for preview server
+  - Versions **SHOULD** match root package.json for consistency
+
 ## Architecture Patterns
 
 ### Component Structure
