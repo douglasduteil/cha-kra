@@ -50,7 +50,7 @@ test.describe('User visits the home page', () => {
       console.log(`Script ${i}: src="${src}" type="${type}"`)
     }
 
-    // Wait for render to complete
+    // Wait for render to complete - look for any content in root
     await page.waitForFunction(() => {
       const root = document.getElementById('root')
       return root && root.children.length > 0
@@ -61,8 +61,8 @@ test.describe('User visits the home page', () => {
     const root_html = await root_div.innerHTML()
     console.log('Root HTML:', root_html.substring(0, 500))
 
-    // App should have rendered - check for Hello World
-    await expect(page.getByText('Hello World')).toBeVisible()
+    // App should have rendered - check for the home page heading
+    await expect(page.getByRole('heading', { name: /welcome to balance/i })).toBeVisible()
   })
 
   test.skip('user sees the welcome message', async ({ page }) => {
