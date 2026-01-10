@@ -8,36 +8,30 @@ import { find_heading, user_clicks_link } from '../helpers/user-actions'
 
 test.describe('User visits the home page', () => {
   test.beforeEach(async ({ page }) => {
+    // Set up console listeners BEFORE navigation
+    page.on('console', (msg) => {
+      console.log(`[CONSOLE ${msg.type()}]`, msg.text())
+    })
+
+    page.on('pageerror', (error) => {
+      console.log('[PAGE ERROR]', error.message)
+    })
+
     await page.goto('/', { waitUntil: 'networkidle' })
   })
 
   test('user sees the home page loads', async ({ page }) => {
-    // Capture console messages
-    const console_messages: string[] = []
-    const console_errors: string[] = []
-
-    page.on('console', (msg) => {
-      console_messages.push(`[${msg.type()}] ${msg.text()}`)
-    })
-
-    page.on('pageerror', (error) => {
-      console_errors.push(error.message)
-      console.log('PAGE ERROR:', error.message)
-    })
-
     await expect(page).toHaveURL('/')
-
-    // Wait a bit for JS to execute
-    await page.waitForTimeout(2000)
-
-    // Log what we found
-    console.log('Console messages:', console_messages.slice(0, 5))
-    console.log('Console errors:', console_errors)
 
     // Wait for #root to have content
     const root_div = page.locator('#root')
     const root_html = await root_div.innerHTML()
-    console.log('Root HTML:', root_html.substring(0, 200))
+    console.log('Root HTML length:', root_html.length)
+    console.log('Root HTML preview:', root_html.substring(0, 300))
+
+    // Check if there's actually any content
+    const all_text = await page.textContent('body')
+    console.log('Body text:', all_text?.substring(0, 200))
 
     await expect(root_div).not.toBeEmpty({ timeout: 5000 })
   })

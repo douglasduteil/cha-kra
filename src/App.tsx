@@ -14,7 +14,7 @@ import { Guided } from '~/pages/Guided'
 import { Home } from '~/pages/Home'
 
 const App: Component = () => {
-  // Initialize theme system
+  // Initialize theme system (FIXED: now properly called inside onMount)
   onMount(() => {
     setupThemeListeners()
   })
