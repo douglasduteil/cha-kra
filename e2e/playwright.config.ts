@@ -27,7 +27,7 @@ export default defineConfig({
 
   webServer: process.env.CI
     ? {
-        command: 'cd .. && npx vite preview --port 5173',
+        command: 'npx serve ../dist -l 5173',
         url: 'http://localhost:5173',
         reuseExistingServer: false,
       }
