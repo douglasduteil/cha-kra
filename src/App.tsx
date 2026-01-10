@@ -1,8 +1,8 @@
-import { type Component } from 'solid-js'
+import { type Component, onMount } from 'solid-js'
 import { Route, Router } from '@solidjs/router'
 
 import { Inspiration } from '~/pages/Inspiration'
-import { initializeTheme } from '~/stores/theme'
+import { setupThemeListeners } from '~/stores/theme'
 import { WhiteNoise } from '~/pages/WhiteNoise'
 import { Breathing } from '~/pages/Breathing'
 import { Layout } from '~/components/Layout'
@@ -15,7 +15,9 @@ import { Home } from '~/pages/Home'
 
 const App: Component = () => {
   // Initialize theme system
-  initializeTheme()
+  onMount(() => {
+    setupThemeListeners()
+  })
 
   return (
     <Router>

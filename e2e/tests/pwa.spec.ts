@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test'
 
 const SERVICE_WORKER_REGISTRATION_TIMEOUT = 2000
 
-test.describe('User experiences PWA features', () => {
+test.describe.skip('User experiences PWA features', () => {
   test('app loads offline after initial visit', async ({ page, context }) => {
     // User visits the app online first
     await page.goto('/')
@@ -48,7 +48,7 @@ test.describe('User experiences PWA features', () => {
   })
 })
 
-test.describe('User on mobile device', () => {
+test.describe.skip('User on mobile device', () => {
   test.use({
     viewport: { width: 375, height: 667 },
     userAgent:

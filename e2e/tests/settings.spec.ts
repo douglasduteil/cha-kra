@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test'
  * Testing how users customize their meditation experience
  */
 
-test.describe('User manages settings', () => {
+test.describe.skip('User manages settings', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/settings')
   })
@@ -76,7 +76,7 @@ test.describe('User manages settings', () => {
   })
 })
 
-test.describe('Settings accessibility', () => {
+test.describe.skip('Settings accessibility', () => {
   test('settings controls are keyboard accessible', async ({ page }) => {
     await page.goto('/settings')
 

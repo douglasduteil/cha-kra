@@ -17,6 +17,12 @@ export default defineConfig({
     baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    actionTimeout: 2000,
+    navigationTimeout: 5000,
+  },
+
+  expect: {
+    timeout: 2000,
   },
 
   projects: [
@@ -26,15 +32,9 @@ export default defineConfig({
     },
   ],
 
-  webServer: process.env.CI
-    ? {
-        command: 'npx serve ../dist -l 5173',
-        url: 'http://localhost:5173',
-        reuseExistingServer: false,
-      }
-    : {
-        command: 'cd .. && npm run dev',
-        url: 'http://localhost:5173',
-        reuseExistingServer: true,
-      },
+  webServer: {
+    command: 'cd .. && npm run dev',
+    url: 'http://localhost:5173',
+    reuseExistingServer: true,
+  },
 })

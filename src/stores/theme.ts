@@ -44,23 +44,21 @@ export const updateEffectiveTheme = () => {
   }
 }
 
-// Initialize theme on mount
-export const initializeTheme = () => {
-  onMount(() => {
-    updateEffectiveTheme()
+// Setup theme listeners - call this from onMount in a component
+export const setupThemeListeners = () => {
+  updateEffectiveTheme()
 
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handleChange = () => {
-      if (theme() === 'system') {
-        updateEffectiveTheme()
-      }
+  // Listen for system theme changes
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+  const handleChange = () => {
+    if (theme() === 'system') {
+      updateEffectiveTheme()
     }
-    mediaQuery.addEventListener('change', handleChange)
+  }
+  mediaQuery.addEventListener('change', handleChange)
 
-    // Cleanup
-    return () => mediaQuery.removeEventListener('change', handleChange)
-  })
+  // Cleanup
+  return () => mediaQuery.removeEventListener('change', handleChange)
 }
 
 // Theme management functions

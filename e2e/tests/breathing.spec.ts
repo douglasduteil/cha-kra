@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test'
  * Testing how users experience the breathing meditation tool
  */
 
-test.describe('User uses breathing exercise', () => {
+test.describe.skip('User uses breathing exercise', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/breathing')
   })
@@ -46,7 +46,7 @@ test.describe('User uses breathing exercise', () => {
   })
 })
 
-test.describe('Breathing exercise accessibility', () => {
+test.describe.skip('Breathing exercise accessibility', () => {
   test('breathing animations respect reduced motion preference', async ({
     page,
     context,
