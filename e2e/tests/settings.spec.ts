@@ -18,55 +18,59 @@ test.describe('User manages settings', () => {
 
   test('user can toggle dark mode from settings', async ({ page }) => {
     // User should see a dark mode control
-    const darkModeControl = page.locator('text=/dark mode|theme/i')
+    const dark_mode_control = page.locator('text=/dark mode|theme/i')
 
-    if (await darkModeControl.isVisible()) {
-      const htmlElement = page.locator('html')
-      const initialTheme = await htmlElement.getAttribute('class')
+    if (await dark_mode_control.isVisible()) {
+      const html_element = page.locator('html')
+      const initial_theme = await html_element.getAttribute('class')
 
       // User toggles dark mode
-      const toggleButton = page.getByRole('button', { name: /dark mode|theme/i })
+      const toggle_button = page.getByRole('button', {
+        name: /dark mode|theme/i,
+      })
 
-      if (await toggleButton.isVisible()) {
-        await toggleButton.click()
+      if (await toggle_button.isVisible()) {
+        await toggle_button.click()
 
         // Theme should change
-        const newTheme = await htmlElement.getAttribute('class')
-        expect(initialTheme).not.toBe(newTheme)
+        const new_theme = await html_element.getAttribute('class')
+        expect(initial_theme).not.toBe(new_theme)
       }
     }
   })
 
   test('user preferences persist across page reloads', async ({ page }) => {
     // Get initial state
-    const htmlElement = page.locator('html')
-    const initialHasClass = await htmlElement.evaluate((el) =>
+    const html_element = page.locator('html')
+    const initial_has_class = await html_element.evaluate((el) =>
       el.classList.contains('dark')
     )
 
     // User toggles a setting
-    const toggleButton = page.getByRole('button', { name: /dark mode|theme/i })
+    const toggle_button = page.getByRole('button', {
+      name: /dark mode|theme/i,
+    })
 
-    if (await toggleButton.isVisible()) {
-      await toggleButton.click()
+    if (await toggle_button.isVisible()) {
+      await toggle_button.click()
 
       // Reload page
       await page.reload()
 
       // Setting should persist
-      const afterReloadHasClass = await htmlElement.evaluate((el) =>
+      const after_reload_has_class = await html_element.evaluate((el) =>
         el.classList.contains('dark')
       )
-      expect(afterReloadHasClass).not.toBe(initialHasClass)
+      expect(after_reload_has_class).not.toBe(initial_has_class)
     }
   })
 
   test('user can navigate back from settings', async ({ page }) => {
     // User should be able to go back
-    const backButton = page.getByRole('link', { name: /back|home/i })
+    const back_button = page.getByRole('link', { name: /back|home/i })
 
-    if (await backButton.isVisible()) {
-      await backButton.click()
+    if (await back_button.isVisible()) {
+      await back_button.click()
       await expect(page).toHaveURL('/')
     }
   })
@@ -79,8 +83,8 @@ test.describe('Settings accessibility', () => {
     // User should be able to navigate all controls with keyboard
     await page.keyboard.press('Tab')
 
-    const focusedElement = page.locator(':focus')
-    await expect(focusedElement).toBeVisible()
+    const focused_element = page.locator(':focus')
+    await expect(focused_element).toBeVisible()
 
     // User should be able to activate focused control
     await page.keyboard.press('Enter')
@@ -91,15 +95,15 @@ test.describe('Settings accessibility', () => {
 
     // All interactive controls should have accessible names
     const buttons = page.getByRole('button')
-    const buttonCount = await buttons.count()
+    const button_count = await buttons.count()
 
-    for (let i = 0; i < buttonCount; i++) {
+    for (let i = 0; i < button_count; i++) {
       const button = buttons.nth(i)
-      const accessibleName = await button.getAttribute('aria-label')
-      const textContent = await button.textContent()
+      const accessible_name = await button.getAttribute('aria-label')
+      const text_content = await button.textContent()
 
       // Button should have either aria-label or text content
-      expect(accessibleName || textContent).toBeTruthy()
+      expect(accessible_name || text_content).toBeTruthy()
     }
   })
 })

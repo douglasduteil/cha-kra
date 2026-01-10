@@ -5,6 +5,8 @@ import { test, expect } from '@playwright/test'
  * Testing PWA capabilities from the user's point of view
  */
 
+const SERVICE_WORKER_REGISTRATION_TIMEOUT = 2000
+
 test.describe('User experiences PWA features', () => {
   test('app loads offline after initial visit', async ({ page, context }) => {
     // User visits the app online first
@@ -12,7 +14,7 @@ test.describe('User experiences PWA features', () => {
     await page.waitForLoadState('networkidle')
 
     // Wait for service worker to be registered
-    await page.waitForTimeout(2000)
+    await page.waitForTimeout(SERVICE_WORKER_REGISTRATION_TIMEOUT)
 
     // User goes offline
     await context.setOffline(true)
@@ -37,8 +39,8 @@ test.describe('User experiences PWA features', () => {
     await page.goto('/')
 
     // Check for theme color
-    const themeColor = page.locator('meta[name="theme-color"]')
-    await expect(themeColor).toHaveCount(1)
+    const theme_color = page.locator('meta[name="theme-color"]')
+    await expect(theme_color).toHaveCount(1)
 
     // Check for viewport
     const viewport = page.locator('meta[name="viewport"]')
@@ -72,16 +74,18 @@ test.describe('User on mobile device', () => {
     const buttons = page.getByRole('button')
     const links = page.getByRole('link')
 
-    const allInteractive = await buttons.all()
-    const allLinks = await links.all()
+    const all_interactive = await buttons.all()
+    const all_links = await links.all()
 
-    for (const element of [...allInteractive, ...allLinks]) {
+    const MIN_TOUCH_TARGET_SIZE = 40
+
+    for (const element of [...all_interactive, ...all_links]) {
       if (await element.isVisible()) {
         const box = await element.boundingBox()
         if (box) {
           // Touch targets should be at least 44x44px
-          expect(box.width).toBeGreaterThanOrEqual(40) // slight tolerance
-          expect(box.height).toBeGreaterThanOrEqual(40)
+          expect(box.width).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET_SIZE)
+          expect(box.height).toBeGreaterThanOrEqual(MIN_TOUCH_TARGET_SIZE)
         }
       }
     }

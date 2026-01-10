@@ -41,9 +41,15 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: 'cd .. && npm run dev',
-    url: 'http://localhost:5173',
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.CI
+    ? {
+        command: 'cd .. && npx vite preview --port 5173',
+        url: 'http://localhost:5173',
+        reuseExistingServer: false,
+      }
+    : {
+        command: 'cd .. && npm run dev',
+        url: 'http://localhost:5173',
+        reuseExistingServer: true,
+      },
 })

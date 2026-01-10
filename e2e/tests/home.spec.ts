@@ -1,10 +1,5 @@
 import { test, expect } from '@playwright/test'
-import {
-  findHeading,
-  findNavLink,
-  userClicksLink,
-  userSeesText,
-} from '../helpers/user-actions'
+import { find_heading, user_clicks_link } from '../helpers/user-actions'
 
 /**
  * Home Page - User Perspective Tests
@@ -18,38 +13,40 @@ test.describe('User visits the home page', () => {
 
   test('user sees the welcome message', async ({ page }) => {
     // User should see the main heading
-    const heading = await findHeading(page, 1, /cha-kra/i)
+    const heading = await find_heading(page, 1, /cha-kra/i)
     await expect(heading).toBeVisible()
   })
 
   test('user sees navigation to all meditation practices', async ({ page }) => {
     // User should be able to navigate to different meditation tools
-    const breathingLink = page.getByRole('link', { name: /breathing/i })
-    const movementLink = page.getByRole('link', { name: /movement/i })
-    const mantraLink = page.getByRole('link', { name: /mantra/i })
+    const breathing_link = page.getByRole('link', { name: /breathing/i })
+    const movement_link = page.getByRole('link', { name: /movement/i })
+    const mantra_link = page.getByRole('link', { name: /mantra/i })
 
-    await expect(breathingLink).toBeVisible()
-    await expect(movementLink).toBeVisible()
-    await expect(mantraLink).toBeVisible()
+    await expect(breathing_link).toBeVisible()
+    await expect(movement_link).toBeVisible()
+    await expect(mantra_link).toBeVisible()
   })
 
   test('user can toggle dark mode', async ({ page }) => {
     // User should be able to switch between light and dark themes
-    const darkModeToggle = page.getByRole('button', { name: /dark mode|theme/i })
+    const dark_mode_toggle = page.getByRole('button', {
+      name: /dark mode|theme/i,
+    })
 
-    if (await darkModeToggle.isVisible()) {
-      await darkModeToggle.click()
+    if (await dark_mode_toggle.isVisible()) {
+      await dark_mode_toggle.click()
 
       // Check if dark mode class is applied
-      const htmlElement = page.locator('html')
-      await expect(htmlElement).toHaveClass(/dark/)
+      const html_element = page.locator('html')
+      await expect(html_element).toHaveClass(/dark/)
     }
   })
 
   test('user can access settings', async ({ page }) => {
     // User should be able to open settings
-    const settingsLink = page.getByRole('link', { name: /settings/i })
-    await expect(settingsLink).toBeVisible()
+    const settings_link = page.getByRole('link', { name: /settings/i })
+    await expect(settings_link).toBeVisible()
   })
 })
 
@@ -58,7 +55,7 @@ test.describe('User navigates between pages', () => {
     await page.goto('/')
 
     // User clicks on breathing practice
-    await userClicksLink(page, /breathing/i)
+    await user_clicks_link(page, /breathing/i)
 
     // User should see breathing page content
     await expect(page).toHaveURL(/\/breathing/)
@@ -68,7 +65,7 @@ test.describe('User navigates between pages', () => {
     await page.goto('/')
 
     // User clicks on movement practice
-    await userClicksLink(page, /movement/i)
+    await user_clicks_link(page, /movement/i)
 
     // User should see movement page
     await expect(page).toHaveURL(/\/movement/)
@@ -78,7 +75,7 @@ test.describe('User navigates between pages', () => {
     await page.goto('/')
 
     // User clicks on mantra meditation
-    await userClicksLink(page, /mantra/i)
+    await user_clicks_link(page, /mantra/i)
 
     // User should see mantra page
     await expect(page).toHaveURL(/\/mantra/)
@@ -93,15 +90,15 @@ test.describe('Accessibility', () => {
     await page.keyboard.press('Tab')
 
     // First focusable element should have visible focus
-    const focusedElement = page.locator(':focus')
-    await expect(focusedElement).toBeVisible()
+    const focused_element = page.locator(':focus')
+    await expect(focused_element).toBeVisible()
   })
 
   test('page has proper heading structure', async ({ page }) => {
     await page.goto('/')
 
     // Page should have at least one h1 heading
-    const mainHeading = page.getByRole('heading', { level: 1 })
-    await expect(mainHeading).toHaveCount(1)
+    const main_heading = page.getByRole('heading', { level: 1 })
+    await expect(main_heading).toHaveCount(1)
   })
 })

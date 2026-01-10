@@ -230,6 +230,14 @@ Detailed explanation of changes focusing on:
 - **MUST** provide explicit return types for public APIs
 - **SHALL** use type inference for internal variables
 
+### Naming Conventions
+
+- **SHALL** use snake_case for all variable names
+- **SHALL** use snake_case for all function names
+- **SHALL** use PascalCase for component names and type definitions
+- **SHALL** use UPPER_SNAKE_CASE for constants
+- **MUST** use descriptive names that reflect purpose and intent
+
 ### Solid.js Patterns
 
 ```typescript
