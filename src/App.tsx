@@ -22,24 +22,22 @@ const App: Component = () => {
 
   return (
     <>
+      <Router>
+        <Layout>
+          <Route path="/" component={Home} />
+          <Route path="/breathing" component={Breathing} />
+          <Route path="/movement" component={Movement} />
+          <Route path="/mantra" component={Mantra} />
+          <Route path="/guided" component={Guided} />
+          <Route path="/tampura" component={Tampura} />
+          <Route path="/white-noise" component={WhiteNoise} />
+          <Route path="/inspiration" component={Inspiration} />
+          <Route path="/settings" component={Settings} />
+        </Layout>
+      </Router>
+
       <Show when={showSplash()}>
         <SplashScreen onComplete={() => setShowSplash(false)} />
-      </Show>
-
-      <Show when={!showSplash()}>
-        <Router>
-          <Layout>
-            <Route path="/" component={Home} />
-            <Route path="/breathing" component={Breathing} />
-            <Route path="/movement" component={Movement} />
-            <Route path="/mantra" component={Mantra} />
-            <Route path="/guided" component={Guided} />
-            <Route path="/tampura" component={Tampura} />
-            <Route path="/white-noise" component={WhiteNoise} />
-            <Route path="/inspiration" component={Inspiration} />
-            <Route path="/settings" component={Settings} />
-          </Layout>
-        </Router>
       </Show>
     </>
   )
