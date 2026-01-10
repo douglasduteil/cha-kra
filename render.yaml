@@ -1,7 +1,7 @@
 services:
   - type: web
     name: cha-kra
-    runtime: static
+    env: static
     buildCommand: npm run build
     staticPublishPath: ./dist
     headers:
