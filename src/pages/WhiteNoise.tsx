@@ -3,12 +3,11 @@ import { type Component, createSignal } from "solid-js";
 import { useTheme, chakraColors } from "~/stores/theme";
 
 export const WhiteNoise: Component = () => {
-  const { chakraColor, effectiveTheme } = useTheme();
+  const { effectiveTheme } = useTheme();
   const [selectedNoise, setSelectedNoise] = createSignal<string | null>(null);
   const [isPlaying, setIsPlaying] = createSignal(false);
 
   const isDark = () => effectiveTheme() === "dark";
-  const color = () => chakraColors[chakraColor()];
 
   const noises = [
     { id: "rain", name: "Rain", icon: "🌧️", description: "Gentle rainfall" },
@@ -47,48 +46,66 @@ export const WhiteNoise: Component = () => {
   ];
 
   return (
-    <div class="flex min-h-full flex-col p-6">
-      <div class="mb-8">
-        <h1 class="mb-2 text-3xl font-bold">Ambient Sounds</h1>
-        <p class="text-lg opacity-70">Natural soundscapes for focus and calm</p>
+    <div class="flex min-h-full flex-col">
+      <div class="mb-10">
+        <h1 class="mb-3 text-3xl font-bold tracking-tight">Ambient Sounds</h1>
+        <p
+          class="text-xl"
+          classList={{
+            "text-gray-600": !isDark(),
+            "text-gray-400": isDark(),
+          }}
+        >
+          Natural soundscapes for focus and calm
+        </p>
       </div>
 
-      <div class="mb-6 grid grid-cols-2 gap-4">
+      <div class="mb-8 grid grid-cols-2 gap-4">
         {noises.map((noise) => (
           <button
             onClick={() => {
               setSelectedNoise(noise.id);
               setIsPlaying(true);
             }}
-            class="rounded-2xl p-6 text-center transition-all duration-200 hover:scale-[1.02]"
+            class="rounded-2xl p-6 text-center shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
             classList={{
-              "ring-2": selectedNoise() === noise.id,
-            }}
-            style={{
-              "background-color": isDark()
-                ? "rgba(255,255,255,0.05)"
-                : "rgba(0,0,0,0.05)",
-              border: `2px solid ${selectedNoise() === noise.id ? color() : "transparent"}`,
-              "ring-color": color(),
+              "bg-white hover:bg-gray-50":
+                !isDark() && selectedNoise() !== noise.id,
+              "bg-gray-900 hover:bg-gray-800":
+                isDark() && selectedNoise() !== noise.id,
+              "bg-gray-900 text-white ring-2 ring-gray-900":
+                !isDark() && selectedNoise() === noise.id,
+              "bg-white text-gray-900 ring-2 ring-white":
+                isDark() && selectedNoise() === noise.id,
             }}
           >
             <div class="mb-2 text-4xl">{noise.icon}</div>
             <h3 class="mb-1 text-lg font-semibold">{noise.name}</h3>
-            <p class="text-sm opacity-70">{noise.description}</p>
+            <p
+              class="text-sm"
+              classList={{
+                "text-gray-600": !isDark() && selectedNoise() !== noise.id,
+                "text-gray-400": isDark() && selectedNoise() !== noise.id,
+                "text-gray-300": !isDark() && selectedNoise() === noise.id,
+                "text-gray-600": isDark() && selectedNoise() === noise.id,
+              }}
+            >
+              {noise.description}
+            </p>
           </button>
         ))}
       </div>
 
       {selectedNoise() && (
-        <div class="mt-auto space-y-4">
+        <div class="mt-auto space-y-6">
           {/* Play/Pause control */}
           <div class="flex items-center justify-center gap-4">
             <button
               onClick={() => setIsPlaying(!isPlaying())}
-              class="flex h-16 w-16 items-center justify-center rounded-full text-3xl transition-all duration-200 hover:scale-110"
-              style={{
-                "background-color": color(),
-                color: isDark() ? "#000000" : "#ffffff",
+              class="flex h-20 w-20 items-center justify-center rounded-full text-4xl shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95"
+              classList={{
+                "bg-gray-900 text-white": !isDark(),
+                "bg-white text-gray-900": isDark(),
               }}
             >
               {isPlaying() ? "⏸" : "▶"}
@@ -97,7 +114,7 @@ export const WhiteNoise: Component = () => {
 
           {/* Volume control */}
           <div class="w-full">
-            <label class="mb-2 block text-center text-lg font-semibold">
+            <label class="mb-3 block text-center text-lg font-semibold">
               Volume
             </label>
             <input
@@ -105,9 +122,10 @@ export const WhiteNoise: Component = () => {
               min="0"
               max="100"
               value="50"
-              class="h-2 w-full cursor-pointer appearance-none rounded-lg"
-              style={{
-                background: `linear-gradient(to right, ${color()} 0%, ${color()} 50%, ${isDark() ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"} 50%, ${isDark() ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"} 100%)`,
+              class="h-2 w-full cursor-pointer appearance-none rounded-lg transition-all"
+              classList={{
+                "bg-gray-300": !isDark(),
+                "bg-gray-700": isDark(),
               }}
             />
           </div>

@@ -53,39 +53,69 @@ export const Inspiration: Component = () => {
   });
 
   return (
-    <div class="flex min-h-full flex-col items-center justify-center p-6">
-      <div class="mb-12 max-w-2xl text-center">
-        <h1 class="mb-8 text-3xl font-bold">Daily Inspiration</h1>
+    <div class="flex min-h-full flex-col items-center justify-center">
+      <div class="w-full max-w-2xl text-center">
+        <h1 class="mb-12 text-3xl font-bold tracking-tight">
+          Daily Inspiration
+        </h1>
 
         {/* Quote card */}
         <div
-          class="rounded-3xl p-8 shadow-2xl transition-all duration-300"
-          style={{
-            "background-color": isDark()
-              ? "rgba(255,255,255,0.05)"
-              : "rgba(0,0,0,0.05)",
-            border: `3px solid ${color()}`,
+          class="rounded-3xl p-10 shadow-xl transition-all duration-300"
+          classList={{
+            "bg-white": !isDark(),
+            "bg-gray-900": isDark(),
           }}
         >
-          <div class="mb-6 text-6xl" style={{ color: color() }}>
+          <div
+            class="mb-8 text-6xl font-serif"
+            classList={{
+              "text-gray-400": !isDark(),
+              "text-gray-600": isDark(),
+            }}
+          >
             "
           </div>
 
-          <p class="mb-6 text-2xl leading-relaxed font-light">
+          <p class="mb-8 text-2xl font-light leading-relaxed">
             {dailyQuote().text}
           </p>
 
-          <div class="flex items-center justify-center gap-3">
-            <div class="h-px flex-1" style={{ "background-color": color() }} />
-            <p class="text-lg font-semibold" style={{ color: color() }}>
+          <div class="flex items-center justify-center gap-4">
+            <div
+              class="h-px flex-1"
+              classList={{
+                "bg-gray-300": !isDark(),
+                "bg-gray-700": isDark(),
+              }}
+            />
+            <p
+              class="text-lg font-semibold"
+              classList={{
+                "text-gray-700": !isDark(),
+                "text-gray-300": isDark(),
+              }}
+            >
               {dailyQuote().author}
             </p>
-            <div class="h-px flex-1" style={{ "background-color": color() }} />
+            <div
+              class="h-px flex-1"
+              classList={{
+                "bg-gray-300": !isDark(),
+                "bg-gray-700": isDark(),
+              }}
+            />
           </div>
         </div>
 
         {/* Info text */}
-        <p class="mt-8 text-lg opacity-70">
+        <p
+          class="mt-10 text-lg"
+          classList={{
+            "text-gray-600": !isDark(),
+            "text-gray-400": isDark(),
+          }}
+        >
           A new inspiring thought awaits you each day
         </p>
       </div>

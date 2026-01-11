@@ -22,36 +22,30 @@ const navItems: NavItem[] = [
 
 export const Navigation: Component = () => {
   const location = useLocation();
-  const { chakraColor, effectiveTheme } = useTheme();
+  const { effectiveTheme } = useTheme();
 
   const isActive = (path: string) => location.pathname === path;
-  const color = () => chakraColors[chakraColor()];
   const isDark = () => effectiveTheme() === "dark";
 
   return (
     <nav
-      class="fixed right-0 bottom-0 left-0 z-40 border-t"
+      class="fixed right-0 bottom-0 left-0 z-40 border-t backdrop-blur-sm transition-colors duration-300"
       classList={{
-        "bg-white border-gray-200": !isDark(),
-        "bg-black border-gray-800": isDark(),
+        "bg-white/80 border-gray-200": !isDark(),
+        "bg-gray-950/80 border-gray-800": isDark(),
       }}
     >
-      <div class="flex justify-around overflow-x-auto">
+      <div class="mx-auto flex max-w-4xl justify-around overflow-x-auto px-2">
         <For each={navItems}>
           {(item) => (
             <A
               href={item.path}
-              class="flex min-w-[60px] flex-col items-center gap-1 px-2 py-3 text-xs transition-all duration-200"
+              class="flex min-w-[70px] flex-col items-center gap-1.5 rounded-xl px-3 py-3 text-xs transition-all duration-200 hover:scale-105"
               classList={{
-                "opacity-100": isActive(item.path),
-                "opacity-60": !isActive(item.path),
-              }}
-              style={{
-                color: isActive(item.path)
-                  ? color()
-                  : isDark()
-                    ? "#ffffff"
-                    : "#000000",
+                "bg-gray-900 text-white": isActive(item.path) && !isDark(),
+                "bg-gray-100 text-gray-900": isActive(item.path) && isDark(),
+                "text-gray-600 hover:text-gray-900": !isActive(item.path) && !isDark(),
+                "text-gray-400 hover:text-gray-100": !isActive(item.path) && isDark(),
               }}
             >
               <span class="text-xl">{item.icon}</span>
