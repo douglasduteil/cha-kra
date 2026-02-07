@@ -14,17 +14,14 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v6
 
-      - name: 📦 Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: "package.json"
-          cache: "npm"
+      - name: 📦 Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: 📚 Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: 🔨 Build production app
-        run: npm run build
+        run: bun run build
 
       - name: 📤 Upload build artifacts
         uses: actions/upload-artifact@v6
@@ -41,12 +38,8 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v6
 
-      - name: 📦 Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version-file: "e2e/package.json"
-          cache: "npm"
-          cache-dependency-path: e2e/package-lock.json
+      - name: 📦 Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: 📥 Download build artifacts
         uses: actions/download-artifact@v7
@@ -55,13 +48,13 @@ jobs:
           path: dist/
 
       - name: 📚 Install e2e dependencies
-        run: cd e2e && npm ci
+        run: cd e2e && bun install --frozen-lockfile
 
       - name: 🎭 Install Playwright browsers
-        run: cd e2e && npx playwright install chromium --with-deps
+        run: cd e2e && bunx playwright install chromium --with-deps
 
       - name: 🧪 Run e2e tests
-        run: cd e2e && npm test
+        run: cd e2e && bun run test
 
       - name: 📊 Upload test report on failure
         if: failure()

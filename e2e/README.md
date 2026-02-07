@@ -49,36 +49,36 @@ test('user can toggle dark mode', ...)
 
 ```bash
 cd e2e
-npm install
+bun install
 ```
 
 ### Running Tests
 
 ```bash
 # Run all tests (headless)
-npm test
+bun run test
 
 # Run with UI (interactive mode)
-npm run test:ui
+bun run test:ui
 
 # Run with browser visible
-npm run test:headed
+bun run test:headed
 
 # Debug tests step by step
-npm run test:debug
+bun run test:debug
 
 # View last test report
-npm run report
+bun run report
 ```
 
 ### From Root Directory
 
 ```bash
 # Run e2e tests from project root
-npm run test:e2e
+bun run test:e2e
 
 # Run with UI
-npm run test:e2e:ui
+bun run test:e2e:ui
 ```
 
 ## Test Structure

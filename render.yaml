@@ -2,7 +2,7 @@ services:
   - type: web
     name: cha-kra
     env: static
-    buildCommand: npm run build
+    buildCommand: bun install --frozen-lockfile && bun run build
     staticPublishPath: ./dist
     headers:
       - path: /*

@@ -111,20 +111,18 @@
   - **WHY**: Prevents unexpected breaking changes and ensures reproducible builds
   - **EXCEPTION**: The Technology Stack documentation above uses `^` for readability
   - **ENFORCEMENT**: package.json SHALL contain exact versions only
-- **Lock Files**: package-lock.json **MUST** be committed
-  - Required for `npm ci` in CI/CD pipelines
+- **Lock Files**: bun.lock **MUST** be committed
+  - Required for `bun install --frozen-lockfile` in CI/CD pipelines
   - Ensures deterministic dependency resolution
-- **Engines Field**: **SHALL** specify exact Node.js and npm versions
+- **Engines Field**: **SHALL** specify exact Node.js version
   - Serves as single source of truth for runtime requirements
-  - CI workflows **SHALL** use `node-version-file` instead of hardcoded versions
-  - Example: `"engines": { "node": "20.18.1", "npm": "10.9.4" }`
+  - Example: `"engines": { "node": "20.18.1" }`
 - **Automated Updates**: Dependabot **SHALL** handle dependency updates
   - Weekly automated PRs for patch and minor updates
   - Major version updates **MUST** be reviewed manually
   - Framework packages (Solid.js, Vite, Tailwind) require manual major version updates
 - **E2E Dependencies**: e2e package.json **SHALL** include all required runtime dependencies
   - E2E tests run in isolated environment without root node_modules
-  - Must include build tools (vite) for preview server
   - Versions **SHOULD** match root package.json for consistency
 
 ## Architecture Patterns
@@ -465,10 +463,10 @@ cha-kra/
 ### Common Commands
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Production build
-npm run preview  # Preview production build
-npm run format   # Format code with Prettier
+bun run dev      # Start development server
+bun run build    # Production build
+bun run preview  # Preview production build
+bun run format   # Format code with Prettier
 ```
 
 ### Common Patterns

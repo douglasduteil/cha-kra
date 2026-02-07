@@ -30,7 +30,7 @@ export default defineConfig({
 
   webServer: {
     // CI: serve pre-built dist/ folder, Dev: run vite dev server
-    command: is_ci ? "npx serve ../dist -l 3000 -s" : "cd .. && npm run dev",
+    command: is_ci ? "bunx serve ../dist -l 3000 -s" : "cd .. && bun run dev",
     url: `http://localhost:${port}`,
     reuseExistingServer: !is_ci,
   },

@@ -4,19 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "20.18.1",
-    "npm": "10.9.4"
+    "node": "20.18.1"
   },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "test:e2e": "cd e2e && npm test",
-    "test:e2e:ui": "cd e2e && npm run test:ui",
-    "test:e2e:headed": "cd e2e && npm run test:headed",
-    "test:e2e:debug": "cd e2e && npm run test:debug",
-    "test:e2e:install": "cd e2e && npm install"
+    "test:e2e": "cd e2e && bun run test",
+    "test:e2e:ui": "cd e2e && bun run test:ui",
+    "test:e2e:headed": "cd e2e && bun run test:headed",
+    "test:e2e:debug": "cd e2e && bun run test:debug",
+    "test:e2e:install": "cd e2e && bun install"
   },
   "dependencies": {
     "@solid-primitives/media": "2.3.3",
