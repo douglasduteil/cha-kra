@@ -1,9 +1,33 @@
 import { type Component, createSignal } from "solid-js";
 import { Play, Pause } from "lucide-solid";
 
+import { type OscillatorRecipe, create_audio } from "~/stores/audio_engine";
 import { BackArrow } from "~/components/BackArrow";
 
+const NOTE_FREQUENCIES: Record<string, number> = {
+  C: 130.81,
+  "C#": 138.59,
+  D: 146.83,
+  "D#": 155.56,
+  E: 164.81,
+  F: 174.61,
+  "F#": 185.0,
+  G: 196.0,
+  "G#": 207.65,
+  A: 220.0,
+  "A#": 233.08,
+  B: 246.94,
+};
+
 const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+function note_recipe(note: string): OscillatorRecipe {
+  return {
+    type: "oscillator",
+    wave: "sawtooth",
+    frequency: NOTE_FREQUENCIES[note] ?? 130.81,
+  };
+}
 
 const TampuraPlayer: Component<{
   note: string;
@@ -70,8 +94,25 @@ const NoteSelector: Component<{
 };
 
 export const Tampura: Component = () => {
-  const [is_playing, set_is_playing] = createSignal(false);
   const [selected_note, set_selected_note] = createSignal("C");
+  const audio = create_audio();
+
+  const is_playing = audio.playing;
+
+  const handle_toggle = () => {
+    if (is_playing()) {
+      audio.stop();
+    } else {
+      audio.play(note_recipe(selected_note()));
+    }
+  };
+
+  const handle_note_select = (note: string) => {
+    set_selected_note(note);
+    if (is_playing()) {
+      audio.play(note_recipe(note));
+    }
+  };
 
   return (
     <div class="space-y-6">
@@ -86,12 +127,12 @@ export const Tampura: Component = () => {
         <TampuraPlayer
           note={selected_note()}
           isPlaying={is_playing()}
-          onToggle={() => set_is_playing(!is_playing())}
+          onToggle={handle_toggle}
         />
 
         <NoteSelector
           selectedNote={selected_note()}
-          onSelect={set_selected_note}
+          onSelect={handle_note_select}
         />
       </div>
     </div>

@@ -12,17 +12,87 @@ import {
 } from "lucide-solid";
 import { type Component, createSignal, Show } from "solid-js";
 
+import { type NoiseRecipe, create_audio } from "~/stores/audio_engine";
 import { BackArrow } from "~/components/BackArrow";
 
-const sounds = [
-  { id: "rain", name: "Rain", icon: CloudRain },
-  { id: "ocean", name: "Ocean", icon: Waves },
-  { id: "forest", name: "Forest", icon: TreePine },
-  { id: "fire", name: "Fire", icon: Flame },
-  { id: "wind", name: "Wind", icon: Wind },
-  { id: "stream", name: "Stream", icon: Droplets },
-  { id: "thunder", name: "Thunder", icon: CloudLightning },
-  { id: "white", name: "White Noise", icon: Radio },
+const sounds: {
+  id: string;
+  name: string;
+  icon: Component<{ size?: number; class?: string }>;
+  recipe: NoiseRecipe;
+}[] = [
+  {
+    id: "rain",
+    name: "Rain",
+    icon: CloudRain,
+    recipe: {
+      type: "noise",
+      color: "pink",
+      filter: { type: "lowpass", freq: 600 },
+    },
+  },
+  {
+    id: "ocean",
+    name: "Ocean",
+    icon: Waves,
+    recipe: {
+      type: "noise",
+      color: "brown",
+      filter: { type: "lowpass", freq: 300 },
+    },
+  },
+  {
+    id: "forest",
+    name: "Forest",
+    icon: TreePine,
+    recipe: {
+      type: "noise",
+      color: "pink",
+      filter: { type: "bandpass", freq: 800 },
+    },
+  },
+  {
+    id: "fire",
+    name: "Fire",
+    icon: Flame,
+    recipe: {
+      type: "noise",
+      color: "brown",
+      filter: { type: "bandpass", freq: 400 },
+    },
+  },
+  {
+    id: "wind",
+    name: "Wind",
+    icon: Wind,
+    recipe: {
+      type: "noise",
+      color: "white",
+      filter: { type: "lowpass", freq: 500 },
+    },
+  },
+  {
+    id: "stream",
+    name: "Stream",
+    icon: Droplets,
+    recipe: {
+      type: "noise",
+      color: "white",
+      filter: { type: "bandpass", freq: 2000 },
+    },
+  },
+  {
+    id: "thunder",
+    name: "Thunder",
+    icon: CloudLightning,
+    recipe: { type: "noise", color: "brown" },
+  },
+  {
+    id: "white",
+    name: "White Noise",
+    icon: Radio,
+    recipe: { type: "noise", color: "white" },
+  },
 ];
 
 const SoundGrid: Component<{
@@ -58,7 +128,9 @@ const SoundGrid: Component<{
 const PlayerControls: Component<{
   selected: string | null;
   isPlaying: boolean;
+  volume: number;
   onToggle: () => void;
+  onVolumeChange: (volume: number) => void;
 }> = (props) => {
   const currentSound = () => sounds.find((s) => s.id === props.selected);
 
@@ -97,13 +169,16 @@ const PlayerControls: Component<{
             <div class="w-full space-y-2">
               <div class="flex justify-between text-xs font-medium tracking-widest uppercase opacity-50">
                 <span>Volume</span>
-                <span>50%</span>
+                <span>{Math.round(props.volume * 100)}%</span>
               </div>
               <input
                 type="range"
                 min="0"
                 max="100"
-                value="50"
+                value={Math.round(props.volume * 100)}
+                onInput={(e) =>
+                  props.onVolumeChange(parseInt(e.currentTarget.value) / 100)
+                }
                 class="h-2 w-full cursor-pointer appearance-none rounded-full bg-black/10 accent-[var(--color-chakra)] dark:bg-white/10"
               />
             </div>
@@ -116,7 +191,34 @@ const PlayerControls: Component<{
 
 export const WhiteNoise: Component = () => {
   const [selected, set_selected] = createSignal<string | null>(null);
-  const [is_playing, set_is_playing] = createSignal(false);
+  const [volume, set_volume] = createSignal(0.5);
+  const audio = create_audio();
+
+  const is_playing = audio.playing;
+
+  const handle_select = (id: string) => {
+    set_selected(id);
+    const sound = sounds.find((s) => s.id === id);
+    if (sound) {
+      audio.play(sound.recipe);
+    }
+  };
+
+  const handle_toggle = () => {
+    if (is_playing()) {
+      audio.stop();
+    } else {
+      const sound = sounds.find((s) => s.id === selected());
+      if (sound) {
+        audio.play(sound.recipe);
+      }
+    }
+  };
+
+  const handle_volume_change = (v: number) => {
+    set_volume(v);
+    audio.set_volume(v);
+  };
 
   return (
     <div class="space-y-6">
@@ -128,18 +230,14 @@ export const WhiteNoise: Component = () => {
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
-        <SoundGrid
-          selected={selected()}
-          onSelect={(id) => {
-            set_selected(id);
-            set_is_playing(true);
-          }}
-        />
+        <SoundGrid selected={selected()} onSelect={handle_select} />
 
         <PlayerControls
           selected={selected()}
           isPlaying={is_playing()}
-          onToggle={() => set_is_playing(!is_playing())}
+          volume={volume()}
+          onToggle={handle_toggle}
+          onVolumeChange={handle_volume_change}
         />
       </div>
     </div>
