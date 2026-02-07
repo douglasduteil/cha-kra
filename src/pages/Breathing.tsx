@@ -55,7 +55,7 @@ const ExerciseCard: Component<{
   return (
     <button
       onClick={props.onClick}
-      class="group flex w-full flex-col gap-1 rounded-2xl border p-5 text-left transition-all duration-300 hover:scale-[1.02]"
+      class="group flex w-full flex-col gap-3 rounded-2xl border p-6 text-left transition-all duration-300 hover:scale-[1.02]"
       classList={{
         "border-chakra bg-chakra/10 shadow-md": props.isSelected,
         "border-transparent bg-white/40 hover:bg-white/60 dark:bg-white/5 dark:hover:bg-white/10":
@@ -64,7 +64,7 @@ const ExerciseCard: Component<{
     >
       <div class="flex items-center justify-between">
         <span class="text-lg font-semibold">{props.exercise.name}</span>
-        <span class="rounded-full bg-black/5 px-2 py-1 text-xs font-medium opacity-60 dark:bg-white/10">
+        <span class="rounded-full bg-black/5 px-3 py-1 text-xs font-medium opacity-60 dark:bg-white/10">
           {props.exercise.duration}
         </span>
       </div>
