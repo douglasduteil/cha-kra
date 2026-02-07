@@ -34,9 +34,11 @@ const meditations = [
 export const Guided: Component = () => {
   return (
     <div class="space-y-8">
-      <div class="flex items-center gap-4">
-        <BackArrow />
-        <h1 class="text-2xl font-bold">Guided Meditations</h1>
+      <div class="relative flex items-center justify-center py-2">
+        <div class="absolute left-0">
+          <BackArrow />
+        </div>
+        <h1 class="text-center text-2xl font-bold">Guided Meditations</h1>
       </div>
 
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

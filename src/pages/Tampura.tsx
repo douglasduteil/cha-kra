@@ -11,9 +11,11 @@ export const Tampura: Component = () => {
 
   return (
     <div class="space-y-6">
-      <div class="flex items-center gap-4">
-        <BackArrow />
-        <h1 class="text-2xl font-bold">Tampura Drone</h1>
+      <div class="relative flex items-center justify-center py-2">
+        <div class="absolute left-0">
+          <BackArrow />
+        </div>
+        <h1 class="text-center text-2xl font-bold">Tampura Drone</h1>
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
