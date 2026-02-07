@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 /**
  * Settings Page - User Perspective Tests
- * Testing how users customize their meditation experience
+ * Testing dark mode toggle, chakra selection, and back navigation
  */
 
 test.describe("User manages settings", () => {
@@ -11,13 +11,12 @@ test.describe("User manages settings", () => {
   });
 
   test("user sees settings page", async ({ page }) => {
-    // User should see the settings heading
-    const heading = page.getByRole("heading", { name: /settings/i });
+    const heading = page.getByText("Settings", { exact: true });
     await expect(heading).toBeVisible();
   });
 
-  test("user can toggle dark mode from settings", async ({ page }) => {
-    // User should see theme heading
+  test("user can toggle dark mode", async ({ page }) => {
+    // Theme heading should be visible
     const theme_heading = page.getByRole("heading", { name: /theme/i });
     await expect(theme_heading).toBeVisible();
 
@@ -26,41 +25,48 @@ test.describe("User manages settings", () => {
     await expect(dark_button).toBeVisible();
     await dark_button.click();
 
-    // Dark class should be applied
     const html_element = page.locator("html");
     await expect(html_element).toHaveClass(/dark/);
 
     // User clicks Light theme button
     const light_button = page.getByRole("button", { name: /light/i });
     await light_button.click();
-
-    // Light class should be applied
     await expect(html_element).toHaveClass(/light/);
   });
 
+  test("user can select a chakra color", async ({ page }) => {
+    // User should see energy center section
+    const energy_heading = page.getByRole("heading", {
+      name: /energy center/i,
+    });
+    await expect(energy_heading).toBeVisible();
+
+    // User clicks on Heart chakra
+    const heart_button = page.getByRole("button", { name: /anahata/i });
+    await expect(heart_button).toBeVisible();
+    await heart_button.click();
+
+    // data-chakra attribute should update on html
+    const html_element = page.locator("html");
+    await expect(html_element).toHaveAttribute("data-chakra", "heart");
+  });
+
   test("user preferences persist across page reloads", async ({ page }) => {
-    // User sets dark theme
     const dark_button = page.getByRole("button", { name: /dark/i });
     await dark_button.click();
 
     const html_element = page.locator("html");
     await expect(html_element).toHaveClass(/dark/);
 
-    // User reloads page
     await page.reload();
-
-    // Dark theme should persist
     await expect(html_element).toHaveClass(/dark/);
   });
 
-  test("user can navigate back from settings", async ({ page }) => {
-    // User should be able to go back
-    const back_button = page.getByRole("link", { name: /back|home/i });
-
-    if (await back_button.isVisible()) {
-      await back_button.click();
-      await expect(page).toHaveURL("/");
-    }
+  test("user can navigate back to home", async ({ page }) => {
+    const back_link = page.getByRole("link", { name: /back to home/i });
+    await expect(back_link).toBeVisible();
+    await back_link.click();
+    await expect(page).toHaveURL("/");
   });
 });
 
@@ -68,20 +74,15 @@ test.describe("Settings accessibility", () => {
   test("settings controls are keyboard accessible", async ({ page }) => {
     await page.goto("/settings");
 
-    // User should be able to navigate all controls with keyboard
     await page.keyboard.press("Tab");
 
     const focused_element = page.locator(":focus");
     await expect(focused_element).toBeVisible();
-
-    // User should be able to activate focused control
-    await page.keyboard.press("Enter");
   });
 
   test("settings have clear labels", async ({ page }) => {
     await page.goto("/settings");
 
-    // All interactive controls should have accessible names
     const buttons = page.getByRole("button");
     const button_count = await buttons.count();
 
@@ -90,7 +91,6 @@ test.describe("Settings accessibility", () => {
       const accessible_name = await button.getAttribute("aria-label");
       const text_content = await button.textContent();
 
-      // Button should have either aria-label or text content
       expect(accessible_name || text_content).toBeTruthy();
     }
   });

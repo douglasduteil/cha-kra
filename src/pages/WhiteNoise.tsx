@@ -1,118 +1,103 @@
-import { type Component, createSignal } from "solid-js";
+import {
+  Play,
+  Pause,
+  CloudRain,
+  Waves,
+  TreePine,
+  Flame,
+  Wind,
+  Droplets,
+  CloudLightning,
+  Radio,
+} from "lucide-solid";
+import { type Component, createSignal, Show } from "solid-js";
 
-import { useTheme, chakraColors } from "~/stores/theme";
+import { BackArrow } from "~/components/BackArrow";
+
+const sounds = [
+  { id: "rain", name: "Rain", icon: CloudRain },
+  { id: "ocean", name: "Ocean", icon: Waves },
+  { id: "forest", name: "Forest", icon: TreePine },
+  { id: "fire", name: "Fire", icon: Flame },
+  { id: "wind", name: "Wind", icon: Wind },
+  { id: "stream", name: "Stream", icon: Droplets },
+  { id: "thunder", name: "Thunder", icon: CloudLightning },
+  { id: "white", name: "White Noise", icon: Radio },
+];
 
 export const WhiteNoise: Component = () => {
-  const { chakraColor, effectiveTheme } = useTheme();
-  const [selectedNoise, setSelectedNoise] = createSignal<string | null>(null);
-  const [isPlaying, setIsPlaying] = createSignal(false);
-
-  const isDark = () => effectiveTheme() === "dark";
-  const color = () => chakraColors[chakraColor()];
-
-  const noises = [
-    { id: "rain", name: "Rain", icon: "🌧️", description: "Gentle rainfall" },
-    {
-      id: "ocean",
-      name: "Ocean Waves",
-      icon: "🌊",
-      description: "Calming sea sounds",
-    },
-    {
-      id: "forest",
-      name: "Forest",
-      icon: "🌲",
-      description: "Birds and rustling leaves",
-    },
-    {
-      id: "fire",
-      name: "Crackling Fire",
-      icon: "🔥",
-      description: "Warm fireplace ambiance",
-    },
-    { id: "wind", name: "Wind", icon: "💨", description: "Soft breeze sounds" },
-    { id: "stream", name: "Stream", icon: "💧", description: "Babbling brook" },
-    {
-      id: "thunder",
-      name: "Thunder",
-      icon: "⛈️",
-      description: "Distant storm",
-    },
-    {
-      id: "white",
-      name: "White Noise",
-      icon: "📻",
-      description: "Pure static sound",
-    },
-  ];
+  const [selected, set_selected] = createSignal<string | null>(null);
+  const [is_playing, set_is_playing] = createSignal(false);
 
   return (
-    <div class="flex min-h-full flex-col p-6">
-      <div class="mb-8">
-        <h1 class="mb-2 text-3xl font-bold">Ambient Sounds</h1>
-        <p class="text-lg opacity-70">Natural soundscapes for focus and calm</p>
+    <div class="flex min-h-full flex-col bg-gray-950/50 px-6 pb-6 dark:bg-transparent">
+      <div class="mb-4">
+        <BackArrow />
       </div>
 
-      <div class="mb-6 grid grid-cols-2 gap-4">
-        {noises.map((noise) => (
+      <h1 class="mb-6 text-center text-sm font-medium tracking-widest uppercase opacity-50">
+        Ambient Sounds
+      </h1>
+
+      {/* Sound tile grid */}
+      <div class="mx-auto grid w-full max-w-sm grid-cols-2 gap-3">
+        {sounds.map((sound) => (
           <button
             onClick={() => {
-              setSelectedNoise(noise.id);
-              setIsPlaying(true);
+              set_selected(sound.id);
+              set_is_playing(true);
             }}
-            class="rounded-2xl p-6 text-center transition-all duration-200 hover:scale-[1.02]"
+            class="flex flex-col items-center gap-2 rounded-xl py-5 transition-all duration-200 hover:scale-[1.02]"
             classList={{
-              "ring-2": selectedNoise() === noise.id,
-            }}
-            style={{
-              "background-color": isDark()
-                ? "rgba(255,255,255,0.05)"
-                : "rgba(0,0,0,0.05)",
-              border: `2px solid ${selectedNoise() === noise.id ? color() : "transparent"}`,
-              "ring-color": color(),
+              "bg-chakra/15 border border-chakra/40": selected() === sound.id,
+              "bg-white/5 hover:bg-white/10 dark:bg-white/5 dark:hover:bg-white/10":
+                selected() !== sound.id,
             }}
           >
-            <div class="mb-2 text-4xl">{noise.icon}</div>
-            <h3 class="mb-1 text-lg font-semibold">{noise.name}</h3>
-            <p class="text-sm opacity-70">{noise.description}</p>
+            <sound.icon
+              size={28}
+              class={selected() === sound.id ? "text-chakra" : "opacity-60"}
+            />
+            <span
+              class="text-sm font-medium"
+              classList={{
+                "text-chakra": selected() === sound.id,
+              }}
+            >
+              {sound.name}
+            </span>
           </button>
         ))}
       </div>
 
-      {selectedNoise() && (
-        <div class="mt-auto space-y-4">
-          {/* Play/Pause control */}
-          <div class="flex items-center justify-center gap-4">
-            <button
-              onClick={() => setIsPlaying(!isPlaying())}
-              class="flex h-16 w-16 items-center justify-center rounded-full text-3xl transition-all duration-200 hover:scale-110"
-              style={{
-                "background-color": color(),
-                color: isDark() ? "#000000" : "#ffffff",
-              }}
-            >
-              {isPlaying() ? "⏸" : "▶"}
-            </button>
-          </div>
+      {/* Play control - appears on selection */}
+      <Show when={selected()}>
+        <div class="mt-8 flex flex-col items-center gap-4">
+          <button
+            onClick={() => set_is_playing(!is_playing())}
+            class="border-chakra bg-chakra/15 flex h-16 w-16 items-center justify-center rounded-full border-2 transition-all duration-200 hover:scale-105 active:scale-95"
+            aria-label={is_playing() ? "Pause" : "Play"}
+          >
+            {is_playing() ? (
+              <Pause size={24} class="text-chakra" />
+            ) : (
+              <Play size={24} class="text-chakra ml-0.5" />
+            )}
+          </button>
 
-          {/* Volume control */}
-          <div class="w-full">
-            <label class="mb-2 block text-center text-lg font-semibold">
-              Volume
-            </label>
+          {/* Volume */}
+          <div class="w-full max-w-xs">
             <input
               type="range"
               min="0"
               max="100"
               value="50"
-              class="h-2 w-full cursor-pointer appearance-none rounded-lg"
-              style={{
-                background: `linear-gradient(to right, ${color()} 0%, ${color()} 50%, ${isDark() ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"} 50%, ${isDark() ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"} 100%)`,
-              }}
+              class="h-1 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[var(--color-chakra)]"
+              aria-label="Volume"
             />
           </div>
         </div>
-      )}
+      </Show>
     </div>
   );
 };

@@ -1,71 +1,40 @@
-import { type Component } from "solid-js";
+import {
+  Wind,
+  Activity,
+  AudioLines,
+  Headphones,
+  Music,
+  Waves,
+  Sparkles,
+} from "lucide-solid";
+import { type Component, For } from "solid-js";
 import { A } from "@solidjs/router";
 
-import { useTheme, chakraColors, chakraNames } from "~/stores/theme";
+const practices = [
+  { name: "Breathing", path: "/breathing", icon: Wind },
+  { name: "Movement", path: "/movement", icon: Activity },
+  { name: "Mantra", path: "/mantra", icon: AudioLines },
+  { name: "Guided", path: "/guided", icon: Headphones },
+  { name: "Tampura", path: "/tampura", icon: Music },
+  { name: "White Noise", path: "/white-noise", icon: Waves },
+  { name: "Inspiration", path: "/inspiration", icon: Sparkles },
+] as const;
 
 export const Home: Component = () => {
-  const { chakraColor, effectiveTheme } = useTheme();
-
-  const isDark = () => effectiveTheme() === "dark";
-  const color = () => chakraColors[chakraColor()];
-  const name = () => chakraNames[chakraColor()];
-
   return (
-    <div class="flex min-h-full flex-col items-center justify-center p-6">
-      {/* Cha-Kra logo */}
-      <div class="mb-12 flex w-full max-w-md items-center justify-between">
-        <div
-          class="flex-1 rounded-l-2xl p-6 text-left"
-          style={{
-            "background-color": isDark() ? color() : "#000000",
-            color: isDark() ? "#000000" : "#ffffff",
-          }}
-        >
-          <h1 class="text-4xl font-bold">Cha</h1>
-        </div>
-        <div
-          class="flex-1 rounded-r-2xl p-6 text-right"
-          style={{
-            "background-color": isDark() ? "#000000" : color(),
-            color: isDark() ? "#ffffff" : "#000000",
-          }}
-        >
-          <h1 class="text-4xl font-bold">Kra</h1>
-        </div>
-      </div>
-
-      {/* Current chakra */}
-      <div class="mb-8 text-center">
-        <p class="mb-2 text-lg opacity-70">Current Energy</p>
-        <div
-          class="inline-block rounded-full px-6 py-3 text-xl font-semibold"
-          style={{
-            "background-color": color(),
-            color: isDark() ? "#000000" : "#ffffff",
-          }}
-        >
-          {name()}
-        </div>
-      </div>
-
-      {/* Welcome message */}
-      <div class="max-w-md text-center">
-        <h2 class="mb-4 text-2xl font-semibold">Welcome to Balance</h2>
-        <p class="mb-8 text-lg leading-relaxed opacity-80">
-          Find your inner peace through mindful practices. Choose a path below
-          to begin your journey.
-        </p>
-
-        <A
-          href="/breathing"
-          class="inline-block rounded-full px-8 py-4 text-lg font-semibold transition-all duration-200 hover:scale-105"
-          style={{
-            "background-color": color(),
-            color: isDark() ? "#000000" : "#ffffff",
-          }}
-        >
-          Start Practice
-        </A>
+    <div class="flex flex-1 flex-col items-center px-6 py-8">
+      <div class="grid w-full max-w-lg grid-cols-2 gap-4 max-[375px]:grid-cols-1">
+        <For each={practices}>
+          {(practice) => (
+            <A
+              href={practice.path}
+              class="hover:border-chakra/30 dark:hover:border-chakra/30 flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/10 bg-black/5 p-6 transition-all duration-200 hover:scale-[1.02] dark:border-white/10 dark:bg-white/5"
+            >
+              <practice.icon size={32} class="text-chakra" />
+              <span class="text-lg font-medium">{practice.name}</span>
+            </A>
+          )}
+        </For>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const is_ci = !!process.env["CI"];
 const port = is_ci ? 3000 : 5173;
+const chromium_path = process.env["PLAYWRIGHT_CHROMIUM_PATH"];
 
 /**
  * User-centric E2E testing configuration
@@ -26,7 +27,17 @@ export default defineConfig({
 
   expect: { timeout: 2000 },
 
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [
+    {
+      name: "chromium",
+      use: {
+        ...devices["Desktop Chrome"],
+        ...(chromium_path && {
+          launchOptions: { executablePath: chromium_path },
+        }),
+      },
+    },
+  ],
 
   webServer: {
     // CI: serve pre-built dist/ folder, Dev: run vite dev server

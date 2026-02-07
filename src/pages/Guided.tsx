@@ -1,70 +1,58 @@
+import { Headphones } from "lucide-solid";
 import { type Component } from "solid-js";
 
-import { useTheme, chakraColors } from "~/stores/theme";
+import { BackArrow } from "~/components/BackArrow";
+
+const meditations = [
+  {
+    name: "Body Scan",
+    description: "Progressive relaxation meditation",
+    duration: "15 min",
+  },
+  {
+    name: "Loving Kindness",
+    description: "Cultivate compassion for all beings",
+    duration: "12 min",
+  },
+  {
+    name: "Chakra Journey",
+    description: "Travel through all seven energy centers",
+    duration: "25 min",
+  },
+  {
+    name: "Sleep Meditation",
+    description: "Drift into peaceful rest",
+    duration: "30 min",
+  },
+  {
+    name: "Morning Intention",
+    description: "Set your purpose for the day",
+    duration: "10 min",
+  },
+];
 
 export const Guided: Component = () => {
-  const { chakraColor, effectiveTheme } = useTheme();
-
-  const isDark = () => effectiveTheme() === "dark";
-  const color = () => chakraColors[chakraColor()];
-
   return (
-    <div class="flex min-h-full flex-col p-6">
-      <div class="mb-8">
-        <h1 class="mb-2 text-3xl font-bold">Guided Meditations</h1>
-        <p class="text-lg opacity-70">Let gentle voices guide your journey</p>
+    <div class="flex min-h-full flex-col px-6 pb-6">
+      <div class="mb-4">
+        <BackArrow />
       </div>
 
+      <h1 class="mb-6 text-2xl font-bold">Guided Meditations</h1>
+
       <div class="flex-1 space-y-4">
-        {[
-          {
-            name: "Body Scan",
-            description: "Progressive relaxation meditation",
-            duration: "15 min",
-          },
-          {
-            name: "Loving Kindness",
-            description: "Cultivate compassion for all beings",
-            duration: "12 min",
-          },
-          {
-            name: "Chakra Journey",
-            description: "Travel through all seven energy centers",
-            duration: "25 min",
-          },
-          {
-            name: "Sleep Meditation",
-            description: "Drift into peaceful rest",
-            duration: "30 min",
-          },
-          {
-            name: "Morning Intention",
-            description: "Set your purpose for the day",
-            duration: "10 min",
-          },
-        ].map((meditation) => (
-          <button
-            class="w-full rounded-2xl p-6 text-left transition-all duration-200 hover:scale-[1.02]"
-            style={{
-              "background-color": isDark()
-                ? "rgba(255,255,255,0.05)"
-                : "rgba(0,0,0,0.05)",
-              border: `2px solid ${color()}`,
-            }}
-          >
-            <div class="mb-2 flex items-center justify-between">
-              <h3 class="text-xl font-semibold">{meditation.name}</h3>
-              <span
-                class="rounded-full px-3 py-1 text-sm font-medium"
-                style={{
-                  "background-color": color(),
-                  color: isDark() ? "#000000" : "#ffffff",
-                }}
-              >
+        {meditations.map((meditation) => (
+          <button class="flex w-full gap-4 rounded-2xl bg-black/5 p-5 text-left transition-all duration-200 hover:scale-[1.01] hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10">
+            <div class="bg-chakra/15 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl">
+              <Headphones size={24} class="text-chakra" />
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold">{meditation.name}</h3>
+              <p class="mt-1 text-sm opacity-60">{meditation.description}</p>
+              <span class="bg-chakra/10 text-chakra mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium">
                 {meditation.duration}
               </span>
             </div>
-            <p class="opacity-70">{meditation.description}</p>
           </button>
         ))}
       </div>

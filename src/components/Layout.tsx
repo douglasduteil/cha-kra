@@ -1,28 +1,30 @@
-import { type Component, type ParentComponent } from "solid-js";
+import { type ParentComponent } from "solid-js";
+import { Settings } from "lucide-solid";
+import { A } from "@solidjs/router";
 
-import { useTheme, chakraColors } from "~/stores/theme";
-import { Navigation } from "~/components/Navigation";
+import { useTheme } from "~/stores/theme";
 
 export const Layout: ParentComponent = (props) => {
-  const { chakraColor, effectiveTheme } = useTheme();
-
-  const isDark = () => effectiveTheme() === "dark";
-  const bgColor = () => (isDark() ? "#000000" : "#ffffff");
-  const textColor = () => (isDark() ? "#ffffff" : "#000000");
+  useTheme();
 
   return (
-    <div
-      class="flex min-h-screen flex-col"
-      style={{
-        "background-color": bgColor(),
-        color: textColor(),
-      }}
-    >
-      {/* Main content area with bottom padding for navigation */}
-      <main class="flex-1 overflow-y-auto pb-20">{props.children}</main>
+    <div class="bg-bg-base dark:bg-bg-base-dark flex min-h-screen flex-col text-gray-900 dark:text-gray-100">
+      {/* Top bar */}
+      <header class="flex items-center justify-between px-6 py-4">
+        <A href="/" class="text-xl font-bold tracking-wide">
+          Cha-Kra
+        </A>
+        <A
+          href="/settings"
+          class="flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-black/5 dark:hover:bg-white/10"
+          aria-label="Settings"
+        >
+          <Settings size={22} class="text-chakra" />
+        </A>
+      </header>
 
-      {/* Bottom navigation */}
-      <Navigation />
+      {/* Main content area */}
+      <main class="flex-1 overflow-y-auto">{props.children}</main>
     </div>
   );
 };
