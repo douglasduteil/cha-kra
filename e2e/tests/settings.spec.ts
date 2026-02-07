@@ -17,7 +17,7 @@ test.describe("User manages settings", () => {
 
   test("user can toggle dark mode", async ({ page }) => {
     // Theme heading should be visible
-    const theme_heading = page.getByRole("heading", { name: /theme/i });
+    const theme_heading = page.getByRole("heading", { name: /appearance/i });
     await expect(theme_heading).toBeVisible();
 
     // User clicks Dark theme button

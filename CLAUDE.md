@@ -144,6 +144,9 @@ src/
 - **SHALL** use composition over complex prop drilling
 - **SHALL** implement proper error boundaries where needed
 - **MUST** export components with proper names
+- **MUST** prefer distinct, purpose-specific components over generic, configurable ones
+- **SHALL** break down large components into named sub-components within the same file for readability
+- **MUST NOT** over-engineer for hypothetical reusability
 
 ### State Management
 
@@ -498,6 +501,6 @@ import { theme, setTheme } from "~/stores/theme";
 
 ---
 
-**Last Updated**: 2026-01-10
+**Last Updated**: 2026-02-07
 **Version**: 1.0
 **Maintained By**: AI Development Team
