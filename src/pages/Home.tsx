@@ -23,7 +23,7 @@ const practices = [
 export const Home: Component = () => {
   return (
     <div class="flex w-full flex-1 flex-col items-center justify-center">
-      <div class="m-auto grid w-full grid-cols-2 gap-4 max-[375px]:grid-cols-1 sm:max-w-4xl sm:grid-cols-3 sm:gap-6 lg:max-w-6xl lg:grid-cols-4 lg:gap-8">
+      <div class="grid w-full grid-cols-2 gap-4 max-[375px]:grid-cols-1 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
         <For each={practices}>
           {(practice) => (
             <A
