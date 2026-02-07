@@ -17,7 +17,19 @@ export type OscillatorRecipe = {
   frequency: number;
 };
 
-export type Recipe = NoiseRecipe | OscillatorRecipe;
+export type TampuraRecipe = {
+  type: "tampura";
+  frequency: number;
+  strings: {
+    ratio: number;
+    detune_cents: number;
+    amplitude: number;
+  }[];
+  filter_freq: number;
+  lfo: { min_rate: number; max_rate: number; depth: number };
+};
+
+export type Recipe = NoiseRecipe | OscillatorRecipe | TampuraRecipe;
 
 // --- Lazy singleton AudioContext ---
 
@@ -131,9 +143,11 @@ function generate_brown_noise(data: Float32Array): void {
 // --- Audio graph building ---
 
 interface ActiveSource {
-  source: AudioBufferSourceNode | OscillatorNode;
+  sources: (AudioBufferSourceNode | OscillatorNode)[];
   gain: GainNode;
   filter: BiquadFilterNode | undefined;
+  extra_nodes: AudioNode[];
+  cleanup?: () => void;
 }
 
 function build_noise_source(
@@ -159,7 +173,7 @@ function build_noise_source(
 
   last_node.connect(gain);
 
-  return { source, gain, filter };
+  return { sources: [source], gain, filter, extra_nodes: [] };
 }
 
 function build_oscillator_source(
@@ -172,7 +186,64 @@ function build_oscillator_source(
   source.frequency.value = recipe.frequency;
   source.connect(gain);
 
-  return { source, gain, filter: undefined };
+  return { sources: [source], gain, filter: undefined, extra_nodes: [] };
+}
+
+function build_tampura_source(
+  ctx: AudioContext,
+  recipe: TampuraRecipe,
+  gain: GainNode,
+): ActiveSource {
+  const mix = ctx.createGain();
+  // Fade in over ~2 seconds for silky onset
+  mix.gain.setValueAtTime(0, ctx.currentTime);
+  mix.gain.setTargetAtTime(1, ctx.currentTime, 0.5);
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.value = recipe.filter_freq;
+
+  mix.connect(filter);
+  filter.connect(gain);
+
+  const oscillators: OscillatorNode[] = [];
+  const extra_nodes: AudioNode[] = [mix];
+
+  for (let si = 0; si < recipe.strings.length; si++) {
+    const s = recipe.strings[si]!;
+
+    // One sawtooth per string — naturally rich in harmonics
+    const osc = ctx.createOscillator();
+    osc.type = "sawtooth";
+    osc.frequency.value = recipe.frequency * s.ratio;
+    osc.detune.value = s.detune_cents;
+
+    const string_gain = ctx.createGain();
+    string_gain.gain.value = s.amplitude;
+    extra_nodes.push(string_gain);
+
+    osc.connect(string_gain);
+    string_gain.connect(mix);
+    oscillators.push(osc);
+
+    // Per-string slow random LFO for organic breathing
+    const lfo_rate =
+      recipe.lfo.min_rate +
+      Math.random() * (recipe.lfo.max_rate - recipe.lfo.min_rate);
+    const lfo = ctx.createOscillator();
+    lfo.type = "sine";
+    lfo.frequency.value = lfo_rate;
+
+    const lfo_scale = ctx.createGain();
+    lfo_scale.gain.value = s.amplitude * recipe.lfo.depth;
+    extra_nodes.push(lfo_scale);
+
+    lfo.connect(lfo_scale);
+    lfo_scale.connect(string_gain.gain);
+    oscillators.push(lfo);
+  }
+
+  return { sources: oscillators, gain, filter, extra_nodes };
 }
 
 // --- Reactive primitive ---
@@ -189,13 +260,19 @@ export function create_audio(): {
 
   function teardown(): void {
     if (active) {
-      try {
-        active.source.stop();
-      } catch {
-        // Already stopped
+      for (const src of active.sources) {
+        try {
+          src.stop();
+        } catch {
+          // Already stopped
+        }
+        src.disconnect();
       }
-      active.source.disconnect();
       if (active.filter) active.filter.disconnect();
+      for (const node of active.extra_nodes) {
+        node.disconnect();
+      }
+      if (active.cleanup) active.cleanup();
       active = null;
     }
     set_playing(false);
@@ -216,11 +293,15 @@ export function create_audio(): {
 
     if (recipe.type === "noise") {
       active = build_noise_source(ctx, recipe, component_gain);
-    } else {
+    } else if (recipe.type === "oscillator") {
       active = build_oscillator_source(ctx, recipe, component_gain);
+    } else {
+      active = build_tampura_source(ctx, recipe, component_gain);
     }
 
-    active.source.start();
+    for (const src of active.sources) {
+      src.start();
+    }
     set_playing(true);
   }
 
