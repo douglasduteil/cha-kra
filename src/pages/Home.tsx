@@ -28,13 +28,13 @@ export const Home: Component = () => {
           {(practice) => (
             <A
               href={practice.path}
-              class="hover:border-chakra/30 dark:hover:border-chakra/30 flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/10 bg-black/5 p-6 transition-all duration-200 hover:scale-[1.02] lg:min-h-[160px] lg:gap-4 lg:p-8 dark:border-white/10 dark:bg-white/5"
+              class="group hover:border-chakra/40 dark:hover:border-chakra/40 dark:hover:shadow-chakra/20 relative flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/5 bg-white/50 p-6 shadow-sm backdrop-blur-md transition-all duration-500 ease-out hover:scale-[1.03] hover:bg-white/80 hover:shadow-xl lg:min-h-[160px] lg:gap-4 lg:p-8 dark:border-white/10 dark:bg-black/20 dark:shadow-none dark:hover:bg-black/40"
             >
               <practice.icon
                 size={32}
-                class="text-chakra transition-all duration-200 lg:h-10 lg:w-10"
+                class="text-chakra transition-all duration-500 group-hover:drop-shadow-md lg:h-10 lg:w-10"
               />
-              <span class="text-lg font-medium lg:text-xl">
+              <span class="text-lg font-medium tracking-wide lg:text-xl">
                 {practice.name}
               </span>
             </A>
