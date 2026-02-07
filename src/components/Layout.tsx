@@ -26,8 +26,8 @@ export const Layout: ParentComponent = (props) => {
       </header>
 
       {/* Main content area */}
-      <main class="flex-1 overflow-y-auto">
-        <div class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <main class="flex flex-1 flex-col overflow-y-auto">
+        <div class="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 py-8 sm:px-6 lg:px-8">
           {props.children}
         </div>
       </main>
