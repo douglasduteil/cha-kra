@@ -13,7 +13,6 @@ updates:
       - "douglasduteil"
     labels:
       - "dependencies"
-      - "bun"
     commit-message:
       prefix: "deps"
       include: "scope"
@@ -41,8 +40,6 @@ updates:
       - "douglasduteil"
     labels:
       - "dependencies"
-      - "e2e"
-      - "bun"
     commit-message:
       prefix: "deps(e2e)"
       include: "scope"
