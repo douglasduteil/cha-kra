@@ -33,25 +33,29 @@ const meditations = [
 
 export const Guided: Component = () => {
   return (
-    <div class="flex min-h-full flex-col px-6 pb-6">
-      <div class="mb-4">
+    <div class="space-y-8">
+      <div class="flex items-center gap-4">
         <BackArrow />
+        <h1 class="text-2xl font-bold">Guided Meditations</h1>
       </div>
 
-      <h1 class="mb-6 text-2xl font-bold">Guided Meditations</h1>
-
-      <div class="flex-1 space-y-4">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {meditations.map((meditation) => (
-          <button class="flex w-full gap-4 rounded-2xl bg-black/5 p-5 text-left transition-all duration-200 hover:scale-[1.01] hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10">
-            <div class="bg-chakra/15 flex h-14 w-14 shrink-0 items-center justify-center rounded-xl">
-              <Headphones size={24} class="text-chakra" />
-            </div>
-            <div class="flex-1">
-              <h3 class="text-lg font-semibold">{meditation.name}</h3>
-              <p class="mt-1 text-sm opacity-60">{meditation.description}</p>
-              <span class="bg-chakra/10 text-chakra mt-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium">
+          <button class="group hover:border-chakra/40 dark:hover:border-chakra/40 dark:hover:shadow-chakra/20 flex w-full flex-col gap-4 rounded-2xl border border-black/5 bg-white/50 p-6 text-left shadow-sm backdrop-blur-md transition-all duration-500 ease-out hover:scale-[1.02] hover:bg-white/80 hover:shadow-xl dark:border-white/10 dark:bg-black/20 dark:shadow-none dark:hover:bg-black/40">
+            <div class="flex w-full items-start justify-between">
+              <div class="bg-chakra/10 text-chakra flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform duration-500 group-hover:scale-110">
+                <Headphones size={24} />
+              </div>
+              <span class="bg-chakra/10 text-chakra rounded-full px-3 py-1 text-xs font-medium">
                 {meditation.duration}
               </span>
+            </div>
+
+            <div>
+              <h3 class="text-lg font-semibold">{meditation.name}</h3>
+              <p class="mt-2 text-sm leading-relaxed opacity-60">
+                {meditation.description}
+              </p>
             </div>
           </button>
         ))}

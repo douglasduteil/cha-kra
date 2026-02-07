@@ -1,4 +1,5 @@
 import { type Component, createSignal, onMount } from "solid-js";
+import { Sparkles } from "lucide-solid";
 
 import { BackArrow } from "~/components/BackArrow";
 
@@ -46,24 +47,25 @@ export const Inspiration: Component = () => {
   });
 
   return (
-    <div class="flex min-h-full flex-col px-6 pb-6">
-      <div class="mb-4">
+    <div class="flex min-h-[60vh] flex-col items-center justify-center space-y-8">
+      <div class="flex w-full items-center justify-start">
         <BackArrow />
       </div>
 
-      {/* Editorial quote layout - fills viewport */}
-      <div class="flex flex-1 flex-col items-center justify-center px-4">
-        <blockquote class="max-w-lg text-center">
-          <p class="text-3xl leading-relaxed font-light">
+      <div class="border-chakra/20 relative flex w-full max-w-2xl flex-col items-center justify-center gap-8 rounded-3xl border bg-white/50 p-8 shadow-sm backdrop-blur-md sm:p-16 dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+        <Sparkles class="text-chakra absolute -top-6 -right-6 h-12 w-12 rotate-12 opacity-50" />
+
+        <blockquote class="text-center">
+          <p class="text-2xl leading-relaxed font-light italic sm:text-4xl">
             "{daily_quote().text}"
           </p>
 
-          <div class="mt-8 flex items-center gap-4">
-            <div class="bg-chakra/30 h-px flex-1" />
-            <cite class="text-chakra text-lg font-medium not-italic">
+          <div class="mt-10 flex items-center gap-4 opacity-60">
+            <div class="bg-chakra h-px flex-1" />
+            <cite class="text-chakra text-lg font-medium tracking-widest uppercase not-italic">
               {daily_quote().author}
             </cite>
-            <div class="bg-chakra/30 h-px flex-1" />
+            <div class="bg-chakra h-px flex-1" />
           </div>
         </blockquote>
       </div>

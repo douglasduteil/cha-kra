@@ -36,80 +36,79 @@ export const Settings: Component = () => {
   };
 
   return (
-    <div class="flex min-h-full flex-col px-6 pb-6">
-      <div class="mb-4">
+    <div class="space-y-6">
+      <div class="flex items-center gap-4">
         <BackArrow />
+        <h1 class="text-2xl font-bold">Settings</h1>
       </div>
 
-      <h1 class="mb-6 text-2xl font-bold">Settings</h1>
+      <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+        {/* Left Column */}
+        <div class="space-y-8">
+          {/* Theme Section */}
+          <section class="border-chakra/20 rounded-3xl border bg-white/50 p-8 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+            <h2 class="mb-6 text-xl font-bold">Appearance</h2>
+            <div class="grid grid-cols-3 gap-4">
+              <For each={theme_options}>
+                {(option) => (
+                  <button
+                    onClick={() => setTheme(option.value)}
+                    class="flex flex-col items-center gap-3 rounded-2xl py-6 transition-all duration-300 hover:scale-[1.05]"
+                    classList={{
+                      "bg-chakra text-white shadow-lg shadow-chakra/30":
+                        theme() === option.value,
+                      "bg-white/40 hover:bg-white/60 dark:bg-white/5 dark:hover:bg-white/10":
+                        theme() !== option.value,
+                    }}
+                  >
+                    <option.Icon size={24} />
+                    <span class="text-sm font-semibold">{option.label}</span>
+                  </button>
+                )}
+              </For>
+            </div>
+          </section>
 
-      <div class="space-y-8">
-        {/* Theme selection */}
-        <section>
-          <h2 class="mb-4 text-xl font-semibold">Theme</h2>
-          <div class="grid grid-cols-3 gap-3">
-            <For each={theme_options}>
-              {(option) => (
-                <button
-                  onClick={() => setTheme(option.value)}
-                  class="flex flex-col items-center gap-2 rounded-xl py-4 transition-all duration-200 hover:scale-105"
-                  classList={{
-                    "bg-chakra/20 border border-chakra/40":
-                      theme() === option.value,
-                    "bg-black/5 dark:bg-white/5": theme() !== option.value,
-                  }}
-                >
-                  <option.Icon
-                    size={24}
-                    class={
-                      theme() === option.value ? "text-chakra" : "opacity-60"
-                    }
-                  />
-                  <span class="text-sm font-semibold">{option.label}</span>
-                </button>
-              )}
-            </For>
-          </div>
-        </section>
+          {/* App Info */}
+          <section class="border-chakra/20 rounded-3xl border bg-white/50 p-8 text-center shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+            <h3 class="mb-2 text-lg font-bold">Cha-Kra</h3>
+            <p class="text-sm opacity-60">Version 1.0.0</p>
+            <p class="mt-4 text-sm font-medium opacity-60">
+              Find balance through mindful practice
+            </p>
+          </section>
+        </div>
 
-        {/* Chakra color selection */}
-        <section>
-          <h2 class="mb-2 text-xl font-semibold">Energy Center</h2>
-          <p class="mb-4 text-sm opacity-60">
+        {/* Right Column: Chakra Selection */}
+        <section class="border-chakra/20 rounded-3xl border bg-white/50 p-8 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+          <h2 class="mb-2 text-xl font-bold">Energy Center</h2>
+          <p class="mb-6 text-sm opacity-60">
             Choose a chakra to set your app's color theme
           </p>
-          <div class="space-y-2">
+          <div class="space-y-3">
             <For each={chakras}>
               {(chakra) => (
                 <button
                   onClick={() => setChakraColor(chakra)}
-                  class="flex w-full items-center gap-4 rounded-xl px-4 py-3 text-left transition-all duration-200 hover:scale-[1.01]"
+                  class="group flex w-full items-center gap-4 rounded-xl px-4 py-4 text-left transition-all duration-300 hover:scale-[1.02]"
                   classList={{
-                    "bg-chakra/15 border border-chakra/30":
+                    "bg-chakra/10 border-chakra border":
                       chakraColor() === chakra,
-                    "bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10":
+                    "bg-white/40 hover:bg-white/60 dark:bg-white/5 dark:hover:bg-white/10 border-transparent border":
                       chakraColor() !== chakra,
                   }}
                 >
                   <div
-                    class="h-8 w-8 shrink-0 rounded-full"
+                    class="h-10 w-10 shrink-0 rounded-full shadow-sm transition-transform group-hover:scale-110"
                     style={{ "background-color": swatch_color(chakra) }}
                   />
-                  <span class="font-medium">{chakraNames[chakra]}</span>
+                  <span class="text-lg font-medium">{chakraNames[chakra]}</span>
+                  {chakraColor() === chakra && (
+                    <div class="bg-chakra ml-auto h-2 w-2 rounded-full" />
+                  )}
                 </button>
               )}
             </For>
-          </div>
-        </section>
-
-        {/* App info */}
-        <section class="pt-4">
-          <div class="rounded-xl bg-black/5 p-6 text-center dark:bg-white/5">
-            <h3 class="mb-1 text-lg font-semibold">Cha-Kra</h3>
-            <p class="text-sm opacity-60">Version 1.0.0</p>
-            <p class="text-sm opacity-60">
-              Find balance through mindful practice
-            </p>
           </div>
         </section>
       </div>

@@ -22,25 +22,23 @@ const practices = [
 
 export const Home: Component = () => {
   return (
-    <div class="flex w-full flex-1 flex-col items-center justify-center">
-      <div class="grid w-full grid-cols-2 gap-4 max-[375px]:grid-cols-1 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
-        <For each={practices}>
-          {(practice) => (
-            <A
-              href={practice.path}
-              class="group hover:border-chakra/40 dark:hover:border-chakra/40 dark:hover:shadow-chakra/20 relative flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/5 bg-white/50 p-6 shadow-sm backdrop-blur-md transition-all duration-500 ease-out hover:scale-[1.03] hover:bg-white/80 hover:shadow-xl lg:min-h-[160px] lg:gap-4 lg:p-8 dark:border-white/10 dark:bg-black/20 dark:shadow-none dark:hover:bg-black/40"
-            >
-              <practice.icon
-                size={32}
-                class="text-chakra transition-all duration-500 group-hover:drop-shadow-md lg:h-10 lg:w-10"
-              />
-              <span class="text-lg font-medium tracking-wide lg:text-xl">
-                {practice.name}
-              </span>
-            </A>
-          )}
-        </For>
-      </div>
+    <div class="grid grid-cols-2 gap-4 max-[375px]:grid-cols-1 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+      <For each={practices}>
+        {(practice) => (
+          <A
+            href={practice.path}
+            class="group hover:border-chakra/40 dark:hover:border-chakra/40 dark:hover:shadow-chakra/20 relative flex min-h-[120px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/5 bg-white/50 p-6 shadow-sm backdrop-blur-md transition-all duration-500 ease-out hover:scale-[1.03] hover:bg-white/80 hover:shadow-xl lg:min-h-[160px] lg:gap-4 lg:p-8 dark:border-white/10 dark:bg-black/20 dark:shadow-none dark:hover:bg-black/40"
+          >
+            <practice.icon
+              size={32}
+              class="text-chakra transition-all duration-500 group-hover:drop-shadow-md lg:h-10 lg:w-10"
+            />
+            <span class="text-lg font-medium tracking-wide lg:text-xl">
+              {practice.name}
+            </span>
+          </A>
+        )}
+      </For>
     </div>
   );
 };

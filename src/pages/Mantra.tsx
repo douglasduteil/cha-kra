@@ -32,23 +32,24 @@ const mantras = [
 
 export const Mantra: Component = () => {
   return (
-    <div class="flex min-h-full flex-col px-6 pb-6">
-      <div class="mb-4">
+    <div class="space-y-8">
+      <div class="flex items-center gap-4">
         <BackArrow />
+        <h1 class="text-2xl font-bold">Mantra Meditation</h1>
       </div>
 
-      <h1 class="mb-8 text-2xl font-bold">Mantra Meditation</h1>
-
-      <div class="flex flex-1 flex-col items-center space-y-10">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {mantras.map((mantra) => (
-          <button class="w-full max-w-md text-center transition-all duration-200 hover:scale-[1.01]">
-            <p class="text-chakra text-3xl leading-snug font-light">
+          <button class="group hover:border-chakra/40 dark:hover:border-chakra/40 dark:hover:shadow-chakra/20 flex w-full flex-col items-center gap-4 rounded-2xl border border-black/5 bg-white/50 p-8 text-center shadow-sm backdrop-blur-md transition-all duration-500 ease-out hover:scale-[1.02] hover:bg-white/80 hover:shadow-xl dark:border-white/10 dark:bg-black/20 dark:shadow-none dark:hover:bg-black/40">
+            <p class="text-chakra text-3xl leading-snug font-light transition-transform duration-500 group-hover:scale-105">
               {mantra.name}
             </p>
-            <p class="mt-3 text-sm opacity-60">{mantra.description}</p>
-            <p class="mt-1 text-xs font-medium tracking-wider uppercase opacity-40">
-              {mantra.chakra}
+            <p class="text-sm leading-relaxed opacity-60">
+              {mantra.description}
             </p>
+            <span class="bg-chakra/10 text-chakra mt-2 rounded-full px-3 py-1 text-xs font-medium tracking-wider uppercase">
+              {mantra.chakra}
+            </span>
           </button>
         ))}
       </div>

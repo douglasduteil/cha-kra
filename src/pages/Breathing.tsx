@@ -1,4 +1,4 @@
-import { type Component, createSignal, createMemo } from "solid-js";
+import { type Component, createSignal, createMemo, For } from "solid-js";
 import { createMediaQuery } from "@solid-primitives/media";
 
 import { BackArrow } from "~/components/BackArrow";
@@ -29,45 +29,56 @@ const exercises = [
 export const Breathing: Component = () => {
   const [selected, setSelected] = createSignal(0);
   const reduced_motion = createMediaQuery("(prefers-reduced-motion: reduce)");
-  const current = createMemo(() => exercises[selected()] ?? exercises[0]);
+  const current = createMemo(() => exercises[selected()] ?? exercises[0]!);
 
   return (
-    <div class="flex min-h-full flex-col px-6 pb-6">
-      {/* Back arrow */}
-      <div class="mb-4">
+    <div class="space-y-6">
+      <div class="flex items-center gap-4">
         <BackArrow />
+        <h1 class="text-2xl font-bold">Breathing Exercises</h1>
       </div>
 
-      {/* Canvas area - centered breathing circle */}
-      <div class="flex flex-1 flex-col items-center justify-center">
-        <div
-          class={`border-chakra bg-chakra/10 flex h-56 w-56 items-center justify-center rounded-full border-4 ${reduced_motion() ? "" : "animate-[pulse_4s_ease-in-out_infinite]"}`}
-        >
-          <div class="text-center">
-            <p class="text-chakra text-2xl font-semibold">{current().name}</p>
-            <p class="mt-1 text-sm opacity-60">{current().duration}</p>
+      <div class="grid gap-8 lg:grid-cols-2 lg:items-start">
+        {/* Visual Area */}
+        <div class="border-chakra/20 flex aspect-square w-full items-center justify-center rounded-3xl border bg-white/50 shadow-sm backdrop-blur-md lg:aspect-auto lg:h-full lg:min-h-[400px] dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+          <div
+            class={`border-chakra bg-chakra/10 flex h-64 w-64 items-center justify-center rounded-full border-4 transition-all duration-1000 ${reduced_motion() ? "" : "animate-[pulse_4s_ease-in-out_infinite]"}`}
+          >
+            <div class="p-4 text-center">
+              <p class="text-chakra text-2xl font-bold">{current().name}</p>
+              <p class="mt-2 text-sm font-medium tracking-widest uppercase opacity-60">
+                {current().duration}
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Exercise list - secondary */}
-      <div class="mt-6 space-y-2">
-        {exercises.map((exercise, i) => (
-          <button
-            onClick={() => setSelected(i)}
-            class="w-full rounded-xl px-4 py-3 text-left transition-colors"
-            classList={{
-              "bg-chakra/15 border border-chakra/30": selected() === i,
-              "bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10":
-                selected() !== i,
-            }}
-          >
-            <div class="flex items-center justify-between">
-              <span class="font-medium">{exercise.name}</span>
-              <span class="text-sm opacity-60">{exercise.duration}</span>
-            </div>
-          </button>
-        ))}
+        {/* List Area */}
+        <div class="space-y-4">
+          <For each={exercises}>
+            {(exercise, i) => (
+              <button
+                onClick={() => setSelected(i())}
+                class="group flex w-full flex-col gap-1 rounded-2xl border p-5 text-left transition-all duration-300 hover:scale-[1.02]"
+                classList={{
+                  "border-chakra bg-chakra/10 shadow-md": selected() === i(),
+                  "border-transparent bg-white/40 hover:bg-white/60 dark:bg-white/5 dark:hover:bg-white/10":
+                    selected() !== i(),
+                }}
+              >
+                <div class="flex items-center justify-between">
+                  <span class="text-lg font-semibold">{exercise.name}</span>
+                  <span class="rounded-full bg-black/5 px-2 py-1 text-xs font-medium opacity-60 dark:bg-white/10">
+                    {exercise.duration}
+                  </span>
+                </div>
+                <p class="text-sm leading-relaxed opacity-60">
+                  {exercise.description}
+                </p>
+              </button>
+            )}
+          </For>
+        </div>
       </div>
     </div>
   );
