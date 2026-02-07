@@ -34,6 +34,30 @@ const quotes = [
   },
 ];
 
+const QuoteCard: Component<{
+  quote: (typeof quotes)[number];
+}> = (props) => {
+  return (
+    <div class="border-chakra/20 relative flex w-full max-w-2xl flex-col items-center justify-center gap-8 rounded-3xl border bg-white/50 p-8 shadow-sm backdrop-blur-md sm:p-16 dark:border-white/10 dark:bg-black/20 dark:shadow-none">
+      <Sparkles class="text-chakra absolute -top-6 -right-6 h-12 w-12 rotate-12 opacity-50" />
+
+      <blockquote class="text-center">
+        <p class="text-2xl leading-relaxed font-light italic sm:text-4xl">
+          "{props.quote.text}"
+        </p>
+
+        <div class="mt-10 flex items-center gap-4 opacity-60">
+          <div class="bg-chakra h-px flex-1" />
+          <cite class="text-chakra text-lg font-medium tracking-widest uppercase not-italic">
+            {props.quote.author}
+          </cite>
+          <div class="bg-chakra h-px flex-1" />
+        </div>
+      </blockquote>
+    </div>
+  );
+};
+
 export const Inspiration: Component = () => {
   const [daily_quote, set_daily_quote] = createSignal(quotes[0]!);
 
@@ -52,23 +76,7 @@ export const Inspiration: Component = () => {
         <BackArrow />
       </div>
 
-      <div class="border-chakra/20 relative flex w-full max-w-2xl flex-col items-center justify-center gap-8 rounded-3xl border bg-white/50 p-8 shadow-sm backdrop-blur-md sm:p-16 dark:border-white/10 dark:bg-black/20 dark:shadow-none">
-        <Sparkles class="text-chakra absolute -top-6 -right-6 h-12 w-12 rotate-12 opacity-50" />
-
-        <blockquote class="text-center">
-          <p class="text-2xl leading-relaxed font-light italic sm:text-4xl">
-            "{daily_quote().text}"
-          </p>
-
-          <div class="mt-10 flex items-center gap-4 opacity-60">
-            <div class="bg-chakra h-px flex-1" />
-            <cite class="text-chakra text-lg font-medium tracking-widest uppercase not-italic">
-              {daily_quote().author}
-            </cite>
-            <div class="bg-chakra h-px flex-1" />
-          </div>
-        </blockquote>
-      </div>
+      <QuoteCard quote={daily_quote()} />
     </div>
   );
 };
