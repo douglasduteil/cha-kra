@@ -7,7 +7,7 @@
       "dependencies": {
         "@solid-primitives/media": "2.3.3",
         "@solidjs/router": "0.15.4",
-        "lucide-solid": "^0.563.0",
+        "lucide-solid": "^0.576.0",
         "solid-js": "1.9.11",
         "solid-motionone": "1.0.4",
       },
@@ -702,7 +702,7 @@
 
     "lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
 
-    "lucide-solid": ["lucide-solid@0.563.0", "", { "peerDependencies": { "solid-js": "^1.4.7" } }, "sha512-Ort9I6BaKdarM/e0VwWddcd9tuven/y0wHqfXIPNzPPe3zwXtIZJDjR2UcAj2XBCfx1aHw/SWiLHPvn9O1Fniw=="],
+    "lucide-solid": ["lucide-solid@0.576.0", "", { "peerDependencies": { "solid-js": "^1.4.7" } }, "sha512-WX1JQJXCE8k4YWfj6pLx57i6AyzmH1LRyGP6LUDzIPgPIki9Pk4sIhSfTfF+jCBj8qRcp5aIz+tUURLJrzGAFw=="],
 
     "magic-string": ["magic-string@0.30.21", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.5" } }, "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ=="],
 
