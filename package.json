@@ -18,7 +18,7 @@
     "test:e2e:install": "cd e2e && bun install"
   },
   "dependencies": {
-    "@solid-primitives/media": "2.3.3",
+    "@solid-primitives/media": "2.3.5",
     "@solidjs/router": "0.15.4",
     "lucide-solid": "^0.563.0",
     "solid-js": "1.9.11",
